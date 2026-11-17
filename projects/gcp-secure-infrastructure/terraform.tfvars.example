@@ -7,5 +7,5 @@ region = "us-central1"
 zone   = "us-central1-a"
 
 # Optional cost-generating logging features are disabled by default.
-enable_flow_logs         = false
-enable_firewall_logging  = false
+enable_flow_logs        = false
+enable_firewall_logging = false
