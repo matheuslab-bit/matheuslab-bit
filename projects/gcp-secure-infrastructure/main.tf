@@ -9,7 +9,7 @@ locals {
     "oslogin.googleapis.com"
   ])
 
-  common_labels = {
+  common_labels     = {
     environment = "learning"
     managed_by  = "terraform"
     project     = "gcp-secure-infrastructure"
@@ -17,7 +17,7 @@ locals {
 }
 
 resource "google_project_service" "required" {
-  for_each = local.required_services
+  for_each            = local.required_services
 
   project            = var.project_id
   service            = each.value
@@ -34,7 +34,7 @@ resource "google_compute_network" "secure" {
   auto_create_subnetworks = false
   routing_mode            = "REGIONAL"
 
-  depends_on = [google_project_service.required]
+  depends_on              = [google_project_service.required]
 }
 
 resource "google_compute_subnetwork" "private" {
@@ -56,10 +56,10 @@ resource "google_compute_subnetwork" "private" {
 }
 
 resource "google_compute_firewall" "iap_ssh" {
-  name      = "${var.network_name}-allow-iap-ssh"
-  network   = google_compute_network.secure.name
-  direction = "INGRESS"
-  priority  = 1000
+  name          = "${var.network_name}-allow-iap-ssh"
+  network       = google_compute_network.secure.name
+  direction     = "INGRESS"
+  priority      = 1000
 
   description   = "Allow SSH only through Identity-Aware Proxy TCP forwarding."
   source_ranges = ["35.235.240.0/20"]
@@ -78,7 +78,7 @@ resource "google_compute_firewall" "iap_ssh" {
     }
   }
 
-  depends_on = [google_project_service.required]
+  depends_on    = [google_project_service.required]
 }
 
 resource "google_service_account" "vm" {
@@ -86,7 +86,7 @@ resource "google_service_account" "vm" {
   display_name = "GCP Secure Infrastructure VM"
   description  = "Dedicated identity for the secure administration VM."
 
-  depends_on = [google_project_service.required]
+  depends_on   = [google_project_service.required]
 }
 
 resource "google_project_iam_member" "vm_observability" {
@@ -96,8 +96,8 @@ resource "google_project_iam_member" "vm_observability" {
   ])
 
   project = var.project_id
-  role    = each.value
-  member  = "serviceAccount:${google_service_account.vm.email}"
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.vm.email}"
 }
 
 resource "google_compute_instance" "secure_vm" {
@@ -124,7 +124,7 @@ resource "google_compute_instance" "secure_vm" {
     # Intentionally no access_config block: the VM receives no external IP.
   }
 
-  metadata = {
+  metadata                  = {
     "enable-oslogin"         = "TRUE"
     "block-project-ssh-keys" = "TRUE"
     "serial-port-enable"     = "FALSE"
@@ -146,7 +146,7 @@ resource "google_compute_instance" "secure_vm" {
     on_host_maintenance = "MIGRATE"
   }
 
-  depends_on = [
+  depends_on                = [
     google_project_iam_member.vm_observability,
     google_compute_firewall.iap_ssh
   ]
@@ -161,7 +161,7 @@ resource "google_monitoring_alert_policy" "high_cpu" {
     display_name = "CPU utilization above 80 percent for five minutes"
 
     condition_threshold {
-      filter = "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\" AND resource.labels.instance_id=\"${google_compute_instance.secure_vm.instance_id}\""
+      filter          = "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\" AND resource.labels.instance_id=\"${google_compute_instance.secure_vm.instance_id}\""
 
       duration        = "300s"
       comparison      = "COMPARISON_GT"
@@ -183,9 +183,9 @@ resource "google_monitoring_alert_policy" "high_cpu" {
     mime_type = "text/markdown"
   }
 
-  user_labels = local.common_labels
+  user_labels  = local.common_labels
 
-  depends_on = [
+  depends_on   = [
     google_project_service.required,
     google_compute_instance.secure_vm
   ]
