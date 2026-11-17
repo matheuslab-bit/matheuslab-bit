@@ -5,7 +5,8 @@ locals {
     "cloudresourcemanager.googleapis.com",
     "logging.googleapis.com",
     "monitoring.googleapis.com",
-    "iap.googleapis.com"
+    "iap.googleapis.com",
+    "oslogin.googleapis.com"
   ])
 
   common_labels = {
