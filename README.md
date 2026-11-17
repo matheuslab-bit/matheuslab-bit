@@ -4,7 +4,7 @@
 
 I'm building a career in Google Cloud engineering, with a focus on designing, deploying, securing, and operating cloud infrastructure.
 
-This profile is where I document my learning journey, hands-on labs, and practical projects. I aim to turn concepts into reproducible implementations with clear technical documentation.
+This profile documents my learning journey, hands-on labs, and practical projects. I aim to turn concepts into reproducible implementations with clear technical documentation.
 
 ## Current learning focus
 
@@ -19,15 +19,13 @@ This profile is where I document my learning journey, hands-on labs, and practic
 
 ## Portfolio
 
-The repositories and projects published here will document practical work. Planned portfolio projects include:
-
 | Project | Focus | Status |
 |---|---|---|
-| Secure GCP Infrastructure | VPC, subnets, firewall rules, IAM, logging, and monitoring | Planned |
-| Cloud Application on GCP | Application deployment, Cloud Run, Cloud SQL, and secrets management | Planned |
-| GCP Infrastructure Automation | Terraform, reusable configuration, and deployment workflows | Planned |
+| [GCP Secure Infrastructure](./projects/gcp-secure-infrastructure/) | Private VPC, IAP-only SSH, Shielded VM, IAM, and monitoring with Terraform | Configuration prepared; validation and deployment pending |
+| Cloud Application on GCP | Cloud Run, Cloud SQL, Artifact Registry, and Secret Manager | Planned |
+| GCP Infrastructure Automation | Reusable Terraform, CI/CD, and deployment workflows | Planned |
 
-Projects will be marked as completed only after implementation, testing, and documentation.
+The first project contains Terraform source code and deployment documentation. It has not yet been applied to a live Google Cloud project. Projects will be marked as deployed or completed only after implementation, testing, and documentation.
 
 ## How I approach learning
 
