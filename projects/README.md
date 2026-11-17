@@ -1,47 +1,44 @@
 # Google Cloud Portfolio Projects
 
-This folder is the index for practical projects. Each project should be added only after implementation begins, and its status should reflect the actual work completed.
+This folder contains practical Google Cloud learning projects. Each project's status must reflect the work actually completed.
 
-## Planned projects
+## 1. Secure GCP Infrastructure
 
-### 1. Secure GCP Infrastructure
+**Status: Terraform configuration prepared; not deployed to a live GCP project yet.**
 
-**Goal:** Build a small cloud environment using secure networking and identity practices.
+Build a small cloud environment with a private VPC, restricted IAP-based SSH access, a Shielded Debian VM, least-privilege service account permissions, and Cloud Monitoring.
 
-**Planned components**
-- VPC and subnets
-- Firewall rules with restricted access
-- Compute Engine Linux VM
-- IAM roles following least privilege
-- Cloud Logging and Monitoring
+- [Project documentation and architecture](./gcp-secure-infrastructure/README.md)
+- [Terraform configuration](./gcp-secure-infrastructure/)
+- [Terraform learning notes and deployment instructions](./gcp-secure-infrastructure/README.md)
 
-**Status:** Planned
+The initial Terraform configuration has been published. It still needs formatting/validation and a reviewed deployment in a personal Google Cloud project before it can be described as tested or deployed.
 
-### 2. Cloud Application on GCP
+## 2. Cloud Application on GCP
 
-**Goal:** Deploy a small application and its supporting services.
+**Status: Planned**
 
-**Planned components**
+Goal: deploy a small application and its supporting services.
+
+Planned components:
 - Cloud Run
 - Cloud SQL
 - Artifact Registry
 - Secret Manager
 - Logging and monitoring
 
-**Status:** Planned
+## 3. GCP Infrastructure Automation
 
-### 3. GCP Infrastructure Automation
+**Status: Planned**
 
-**Goal:** Provision and update cloud infrastructure through version-controlled code.
+Goal: provision and update cloud infrastructure through version-controlled code.
 
-**Planned components**
+Planned components:
 - Terraform configuration
 - Reusable variables and outputs
 - IAM and network resources
 - Validation and deployment workflow
 - Documentation of cost and security considerations
-
-**Status:** Planned
 
 ## Project quality checklist
 
