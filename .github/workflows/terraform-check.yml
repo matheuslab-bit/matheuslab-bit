@@ -1,0 +1,41 @@
+name: Terraform validation
+
+on:
+  push:
+    paths:
+      - "projects/gcp-secure-infrastructure/**"
+      - ".github/workflows/terraform-check.yml"
+  pull_request:
+    paths:
+      - "projects/gcp-secure-infrastructure/**"
+      - ".github/workflows/terraform-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Format and validate Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/gcp-secure-infrastructure
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+
+      - name: Initialize providers without a backend
+        run: terraform init -backend=false
+
+      - name: Validate configuration
+        run: terraform validate
