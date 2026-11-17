@@ -124,9 +124,9 @@ resource "google_compute_instance" "secure_vm" {
   }
 
   metadata = {
-    enable-oslogin         = "TRUE"
-    block-project-ssh-keys = "TRUE"
-    serial-port-enable     = "FALSE"
+    "enable-oslogin"         = "TRUE"
+    "block-project-ssh-keys" = "TRUE"
+    "serial-port-enable"     = "FALSE"
   }
 
   service_account {
