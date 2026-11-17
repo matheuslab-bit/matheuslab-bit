@@ -19,9 +19,9 @@ locals {
 resource "google_project_service" "required" {
   for_each            = local.required_services
 
-  project            = var.project_id
-  service            = each.value
-  disable_on_destroy = false
+  project             = var.project_id
+  service             = each.value
+  disable_on_destroy  = false
 }
 
 data "google_compute_image" "debian" {
@@ -95,7 +95,7 @@ resource "google_project_iam_member" "vm_observability" {
     "roles/monitoring.metricWriter"
   ])
 
-  project = var.project_id
+  project  = var.project_id
   role     = each.value
   member   = "serviceAccount:${google_service_account.vm.email}"
 }
