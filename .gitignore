@@ -1,0 +1,29 @@
+﻿# Legacy Lab 01 folder (preserve locally, do not version)
+/01-vpc-network/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfplan
+crash.log
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Credentials and private keys
+*.pem
+*.key
+service-account*.json
+credentials*.json
+*-key.json
+secrets*.json
+
+# Operating system
+.DS_Store
+Thumbs.db
