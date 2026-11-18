@@ -1,49 +1,46 @@
 # Hi, I'm Matheus Silva
 
-**Aspiring Google Cloud Engineer | Cloud Infrastructure | Cloud Security | Automation**
+**IT Infrastructure & Telecommunications Professional | Aspiring Google Cloud Engineer**
 
-I'm building a career in Google Cloud engineering, with a focus on designing, deploying, securing, and operating cloud infrastructure.
+[English](README.md) | [Português (Brasil)](README.pt-BR.md)
 
-This profile documents my learning journey, hands-on labs, and practical projects. I aim to turn concepts into reproducible implementations with clear technical documentation.
+I work with IT and telecommunications infrastructure, including SIP/VoIP troubleshooting and technical support. My background also includes hands-on experience with Active Directory, VMware, and Hyper-V. I am now building practical Google Cloud engineering skills through reproducible labs, security-first design, Terraform, and documented testing.
 
-## Current learning focus
+My goal is to move into a **remote cloud engineering or cloud operations role**. This GitHub profile is a learning portfolio, not a claim of production cloud experience.
 
-- Google Cloud Platform fundamentals and core services
-- Cloud networking, compute, and storage
-- Identity and Access Management (IAM) and security fundamentals
-- Linux administration and networking
-- Infrastructure as Code with Terraform
-- Containers with Docker and Kubernetes fundamentals
-- Monitoring, logging, and cloud operations
-- Automation with Python and shell scripting
+## Featured Google Cloud labs
 
-## Portfolio
+| Lab | What it demonstrates | Status |
+| --- | --- | --- |
+| [01 — VPC Networking](projects/01-vpc-network/README.md) | Terraform-managed VPC and regional subnet design in São Paulo; separate state and GitHub Actions validation | **Terraform and CI validated**; deployment evidence is not documented in this lab |
+| [02 — Secure Compute Engine](projects/02-secure-compute-engine/README.md) | Private Debian 12 `e2-micro` VM in Iowa, IAP-only SSH, OS Login, Shielded VM, restricted firewall and 10 GB standard disk | **Deployed; IAP/OS Login SSH tested** (November 18, 2026) |
+| [GCP Secure Infrastructure — initial design](projects/gcp-secure-infrastructure/README.md) | Earlier Terraform reference for a private VM, networking, IAM and monitoring | **Design only; not independently deployed** |
 
-| Project | Focus | Status |
-|---|---|---|
-| [GCP Secure Infrastructure](./projects/gcp-secure-infrastructure/) | Private VPC, IAP-only SSH, Shielded VM, IAM, and monitoring with Terraform | Configuration prepared; validation and deployment pending |
-| Cloud Application on GCP | Cloud Run, Cloud SQL, Artifact Registry, and Secret Manager | Planned |
-| GCP Infrastructure Automation | Reusable Terraform, CI/CD, and deployment workflows | Planned |
+The Lab 02 infrastructure reuses the existing VPC without moving or replacing the São Paulo subnet. Its Iowa location was selected for potential Google Cloud Free Tier eligibility. **Eligibility is not a guarantee of zero charges.**
 
-The first project contains Terraform source code and deployment documentation. It has not yet been applied to a live Google Cloud project. Projects will be marked as deployed or completed only after implementation, testing, and documentation.
+[Browse the project index](projects/README.md) | [Follow the learning roadmap](ROADMAP.md)
 
-## How I approach learning
+## Technical focus
 
-- Build hands-on labs instead of relying only on theory.
-- Document architecture, implementation steps, and trade-offs.
-- Apply security principles such as least privilege.
-- Keep infrastructure reproducible and version-controlled.
-- Explain what each project does and how it can be reproduced.
+- **Cloud:** Google Cloud, Compute Engine, VPC, IAM, IAP, OS Login, Cloud Monitoring
+- **Infrastructure as Code:** Terraform, Git, GitHub Actions
+- **Systems and networking:** Linux, Windows, TCP/IP, DNS, firewalls and technical troubleshooting
+- **Professional background:** SIP/VoIP operations, incident investigation and infrastructure support
+- **Next steps:** Cloud Run, containers, observability, automation and the Google Cloud Associate Cloud Engineer certification
 
-## Certification goal
+## How I document my work
 
-- Google Cloud Associate Cloud Engineer
+1. Define the goal, architecture and scope of each lab.
+2. Version configuration and validate it with automated checks.
+3. Record security decisions, permissions and cost considerations.
+4. Separate **planned**, **validated** and **deployed/tested** work.
+5. Do not publish credentials, Terraform state or sensitive infrastructure details.
 
-## Connect
+## Contact
 
 - **Email:** [matheus.silva.gcp@gmail.com](mailto:matheus.silva.gcp@gmail.com)
 - **GitHub:** [github.com/matheuslab-bit](https://github.com/matheuslab-bit)
 
 ---
 
-*This is a learning and portfolio profile. Skills and projects will be updated as I gain practical experience.*
+*Portfolio in progress. Infrastructure exercises are for learning, not production hosting.*

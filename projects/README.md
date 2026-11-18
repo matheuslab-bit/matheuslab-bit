@@ -1,54 +1,37 @@
 # Google Cloud Portfolio Projects
 
-This folder contains practical Google Cloud learning projects. Each project's status must reflect the work actually completed.
+[English](README.md) | [Português (Brasil)](README.pt-BR.md)
 
-## 1. Secure GCP Infrastructure
+This folder contains reproducible Google Cloud learning labs. Each project's status distinguishes between **code validation**, **cloud deployment**, and **tested access**.
 
-**Status: Terraform configuration prepared; not deployed to a live GCP project yet.**
+## Published labs
 
-Build a small cloud environment with a private VPC, restricted IAP-based SSH access, a Shielded Debian VM, least-privilege service account permissions, and Cloud Monitoring.
+| Project | Scope | Verified progress |
+| --- | --- | --- |
+| [01 — VPC Networking](01-vpc-network/README.md) | Terraform configuration for a custom VPC and regional subnet in São Paulo | Terraform formatting/validation and GitHub Actions checks completed. This lab does not contain independent cloud deployment evidence. |
+| [02 — Secure Compute Engine](02-secure-compute-engine/README.md) | Private Debian 12 `e2-micro` VM in Iowa; dedicated subnet, IAP-based SSH, OS Login, Shielded VM and restrictive firewall | Deployment and SSH through IAP/OS Login tested on November 18, 2026. Terraform CI passed for the change in [PR #4](https://github.com/matheuslab-bit/matheuslab-bit/pull/4). |
 
-- [Project documentation and architecture](./gcp-secure-infrastructure/README.md)
-- [Terraform configuration](./gcp-secure-infrastructure/)
-- [Terraform learning notes and deployment instructions](./gcp-secure-infrastructure/README.md)
+**Architecture note:** Lab 02 references the existing VPC from Lab 01, but manages its own Iowa subnet and its own Terraform state. The São Paulo subnet remains in place. Neither lab should overwrite the other's state.
 
-The initial Terraform configuration has been published. It still needs formatting/validation and a reviewed deployment in a personal Google Cloud project before it can be described as tested or deployed.
+**Cost note:** The Iowa `e2-micro` and 10 GB `pd-standard` disk may qualify for Google Cloud's Free Tier within its usage limits. Billing and other services can still incur charges.
 
-## 2. Cloud Application on GCP
+## Earlier design (separate from Labs 01 and 02)
 
-**Status: Planned**
+- [GCP Secure Infrastructure](gcp-secure-infrastructure/README.md) — an initial Terraform architecture reference including private compute, security and monitoring. **Not independently deployed or verified.** It must not be confused with the completed Lab 02.
 
-Goal: deploy a small application and its supporting services.
+## Planned projects
 
-Planned components:
-- Cloud Run
-- Cloud SQL
-- Artifact Registry
-- Secret Manager
-- Logging and monitoring
+- **Cloud Application on GCP:** Cloud Run, Artifact Registry, Cloud SQL, Secret Manager and observability.
+- **Infrastructure Automation:** reusable Terraform and CI/CD workflows.
 
-## 3. GCP Infrastructure Automation
-
-**Status: Planned**
-
-Goal: provision and update cloud infrastructure through version-controlled code.
-
-Planned components:
-- Terraform configuration
-- Reusable variables and outputs
-- IAM and network resources
-- Validation and deployment workflow
-- Documentation of cost and security considerations
+Planned work is intentionally excluded from the completed-labs table.
 
 ## Project quality checklist
 
-Before marking a project complete:
-- [ ] The implementation has been tested.
-- [ ] The README explains the problem and architecture.
-- [ ] Setup and cleanup instructions are documented.
-- [ ] An architecture diagram is included where useful.
-- [ ] No credentials, tokens, or secrets are committed.
-- [ ] Cost implications and resource cleanup are explained.
-- [ ] Screenshots or other evidence show the real implementation.
+- [x] Keep source code in version control and document the architecture.
+- [x] Use Terraform validation and automated checks where applicable.
+- [x] Record security trade-offs and cost considerations.
+- [ ] Add sanitized evidence (commands/output or screenshots) for each deployed lab.
+- [ ] Publish a tested cloud application with reproducible instructions.
 
-These are portfolio learning projects unless explicitly stated otherwise. Do not present planned work as completed professional experience.
+Never commit secrets, Terraform state, unredacted credentials or private access tokens. This is a **learning portfolio**, not a production service catalog.
