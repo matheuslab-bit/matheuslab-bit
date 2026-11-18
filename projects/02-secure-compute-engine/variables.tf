@@ -10,12 +10,12 @@ variable "project_id" {
 }
 
 variable "zone" {
-  description = "Zona da VM na mesma região da subnet existente."
+  description = "Zona da VM em Iowa, região elegível ao Free Tier."
   type        = string
-  default     = "southamerica-east1-a"
+  default     = "us-central1-a"
 
   validation {
-    condition     = can(regex("^southamerica-east1-[abc]$", var.zone))
-    error_message = "Use uma zona de southamerica-east1: a, b ou c."
+    condition     = can(regex("^us-central1-[abcf]$", var.zone))
+    error_message = "Use uma zona de us-central1: a, b, c ou f."
   }
 }

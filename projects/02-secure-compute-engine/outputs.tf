@@ -4,8 +4,13 @@ output "instance_name" {
 }
 
 output "internal_ip" {
-  description = "IP privado alocado na subnet do Lab 01."
+  description = "IP privado alocado na subnet de Iowa gerenciada pelo Lab 02."
   value       = google_compute_instance.vm.network_interface[0].network_ip
+}
+
+output "subnet_name" {
+  description = "Subnet exclusiva do Lab 02 em Iowa; a subnet de São Paulo é preservada."
+  value       = google_compute_subnetwork.lab02.name
 }
 
 output "service_account_email" {
