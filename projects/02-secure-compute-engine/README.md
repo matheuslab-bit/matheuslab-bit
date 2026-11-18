@@ -30,12 +30,28 @@ Execute sempre nesta pasta. O Lab 02 tem configuração e lockfile próprios; um
 ## Controles de segurança e limites
 
 - Sem `access_config` e com `IPV4_ONLY`: a VM não recebe IP público nem IPv6.
-- SSH via IAP, com allow TCP/22 de `35.235.240.0/20` em prioridade 1000. Um deny TCP/22 de `0.0.0.0/0` em prioridade 1001 impede que regras VPC de prioridade inferior liberem outras origens. Ambas as regras têm como alvo somente a conta dedicada; não reutilize essa conta em outras VMs.
+- SSH via IAP, com allow TCP/22 de `35.235.240.0/20` em prioridade 900. Um deny TCP/22 de `0.0.0.0/0` em prioridade 901 impede que regras VPC de prioridade inferior liberem outras origens. O deny precede inclusive allows comuns de prioridade 1000; números menores têm precedência. Em empate, deny vence allow. Ambas as regras têm como alvo somente a conta dedicada; não reutilize essa conta em outras VMs.
+- A VM declara `depends_on` para as duas regras: ambas devem ser criadas antes dela; na destruição normal, a VM é removida antes das regras. Isso ordena operações Terraform, sem garantir propagação instantânea das regras no GCP.
 - Antes de implantar, revisar as políticas efetivas, inclusive regras hierárquicas e regras VPC de prioridade superior ou igual. Elas podem sobrepor ou bloquear este desenho. Nenhuma política existente foi inspecionada ou modificada nesta entrega.
 - OS Login habilitado somente nos metadados desta VM; chaves SSH de projeto bloqueadas e acesso serial desabilitado. Não há chaves embutidas ou senha no Terraform.
 - Secure Boot, vTPM e integrity monitoring habilitados. Isso não instala um agente de observabilidade nem configura alertas.
 - Conta `lab02-secure-vm` sem chaves e sem concessões IAM de aplicação. O scope `cloud-platform` é o limite OAuth recomendado pelo Google; as permissões efetivas continuam limitadas pelo IAM. Revisar também concessões herdadas ou existentes antes de implantar. Não há necessidade de Editor, Owner ou papéis de logs/monitoramento para esta VM vazia.
 - Sem NAT, proxy, startup script ou instalação de pacotes. O IAP permite entrada administrativa, mas não fornece saída para a internet. Atualizações de pacotes exigem um caminho de saída aprovado separadamente. Private Google Access depende da subnet existente e não é alterado aqui. A regra implícita de saída da VPC não é um controle de restrição de egress; esta configuração não promete isolamento de saída.
+
+## Dependência do Lab 01 e saída da VM
+
+O contrato de rede coincide com os defaults de `../01-vpc-network/variables.tf`: `portfolio-vpc`, `portfolio-subnet`, região `southamerica-east1` e CIDR `10.10.0.0/24`. O projeto do Lab 01 é uma variável obrigatória; deve ser o mesmo `driven-surface-513117-k0` usado aqui. Se as variáveis do Lab 01 forem personalizadas, revisar este contrato antes de qualquer plano. A pasta legada `/01-vpc-network/` não deve ser usada para esta preparação.
+
+A auditoria anterior registrou a subnet existente com **Private Google Access desabilitado**, sem Cloud NAT e com rota `0.0.0.0/0` para o default internet gateway. Isso é contexto da auditoria, não uma consulta cloud desta entrega. O Lab 01 não configura Private Google Access explicitamente; o Lab 02 apenas consulta a subnet e não assume sua gestão.
+
+| Caminho | Limite esperado neste desenho |
+|---|---|
+| Internet e repositórios Debian | Sem saída direta: IP privado e rota padrão, sozinhos, não fornecem acesso à internet. `apt update` e downloads externos ficam pendentes de saída aprovada. |
+| APIs Google por endpoints externos | Sem acesso pela configuração auditada: Private Google Access está desabilitado e não há NAT. Habilitar PGA futuramente exige revisão da subnet do Lab 01 e não libera a internet em geral. |
+| IAP de entrada / OS Login | Não exige NAT para o túnel. O administrador acessa as APIs a partir do cliente; o guest usa o servidor de metadados para OS Login. Ainda depende de IAM, firewall, serviços do guest e teste após implantação. |
+| Metadados e comunicação interna | Não dependem de NAT; a comunicação interna continua sujeita a rotas e firewalls efetivos. Ausência de NAT não equivale a bloqueio de toda saída. |
+
+Decisão: manter este lab sem NAT, IP público, alterações na subnet ou comandos de atualização no boot. Não apresentar a VM como atualizada ou pronta para produção; antes de uso duradouro, definir uma estratégia autorizada de patches (por exemplo, imagem atualizada e caminho de saída controlado). Remover primeiro os consumidores do Lab 02 antes de uma futura limpeza da rede do Lab 01.
 
 ## Pré-requisitos para futura implantação
 
@@ -77,7 +93,9 @@ Esses comandos verificam sintaxe, formatação e schema do provider. O init baix
 
 O workflow `.github/workflows/02-secure-compute-engine-check.yml` executa os mesmos três checks com Terraform 1.9.8, apenas quando arquivos deste lab/workflow mudam, ou por acionamento manual. Tem apenas `contents: read`, sem credenciais GCP ou autenticação cloud. Não executa plan/apply/destroy. O lockfile deve ficar versionado; sua atualização é uma alteração deliberada a revisar.
 
-Validação local desta entrega: os três comandos acima passaram com Terraform 1.17.2 e provider Google 7.46.2. Os resultados de CI com Terraform 1.9.8 ficam disponíveis nos checks do PR. Não foi executado plan/apply/destroy, autenticação GCP ou consulta dos recursos existentes.
+Validação local desta preparação (18/11/2026): formatação do Lab 02, init sem backend com lockfile somente para leitura e validate passaram com Terraform 1.17.2 e provider Google 7.46.2. O Lab 01 também passou nos mesmos checks. A checagem adicional de formatação na raiz apontou uma pendência preexistente em `projects/gcp-secure-infrastructure/main.tf`, fora do escopo e preservada.
+
+O commit `cda26b578fa704c0e4a78107a1e9e4b9d1f9d978` foi publicado no [PR #3](https://github.com/matheuslab-bit/matheuslab-bit/pull/3). As execuções de CI de [push](https://github.com/matheuslab-bit/matheuslab-bit/actions/runs/44231825713) e [pull request](https://github.com/matheuslab-bit/matheuslab-bit/actions/runs/44231850656) passaram nos três checks do Lab 02 com Terraform 1.9.8 e provider Google 7.46.2. Esses resultados se referem a esse commit; alterações posteriores devem ser verificadas em suas próprias execuções. Não foi executado plan/apply/destroy, autenticação GCP ou consulta dos recursos existentes. A validação operacional no GCP continua pendente.
 
 ## Operação futura — exige nova autorização
 
@@ -108,6 +126,11 @@ Parar a VM reduz custos de CPU/memória, mas o disco continua cobrado. Planejar 
 Não versionar `.terraform/`, state, planos, tfvars, credenciais, chaves ou arquivos locais. JSON legítimo pode ser versionado; para credenciais JSON, usar os nomes específicos ignorados (por exemplo, `credentials.json`, `service-account*.json`, `*-key.json` ou `secrets.json`). O nome não detecta segredos: revisar sempre o conteúdo dos arquivos preparados para commit.
 
 ## Referências
+
+- [Ordem explícita de recursos com depends_on](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on)
+- [Prioridade e precedência de regras VPC](https://docs.cloud.google.com/firewall/docs/firewalls)
+- [Private Google Access e seus limites](https://docs.cloud.google.com/vpc/docs/private-google-access)
+- [OS Login no guest e servidor de metadados](https://github.com/GoogleCloudPlatform/guest-oslogin)
 
 - [IAP TCP forwarding: faixa de origem, IAM e conexão](https://docs.cloud.google.com/iap/docs/using-tcp-forwarding)
 - [Configuração do OS Login e papéis necessários](https://docs.cloud.google.com/compute/docs/oslogin/set-up-oslogin)
