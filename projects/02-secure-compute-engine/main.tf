@@ -22,7 +22,7 @@ resource "google_compute_firewall" "iap_ssh" {
   name                    = "lab02-allow-iap-ssh"
   network                 = data.google_compute_network.existing.self_link
   direction               = "INGRESS"
-  priority                = 1000
+  priority                = 900
   source_ranges           = ["35.235.240.0/20"]
   target_service_accounts = [google_service_account.vm.email]
 
@@ -32,13 +32,13 @@ resource "google_compute_firewall" "iap_ssh" {
   }
 }
 
-# Prevent lower-priority broad VPC allow rules from exposing SSH to this VM.
+# Deny non-IAP SSH before common priority-1000 VPC allow rules.
 resource "google_compute_firewall" "deny_other_ssh" {
   project                 = var.project_id
   name                    = "lab02-deny-other-ssh"
   network                 = data.google_compute_network.existing.self_link
   direction               = "INGRESS"
-  priority                = 1001
+  priority                = 901
   source_ranges           = ["0.0.0.0/0"]
   target_service_accounts = [google_service_account.vm.email]
 
@@ -49,6 +49,12 @@ resource "google_compute_firewall" "deny_other_ssh" {
 }
 
 resource "google_compute_instance" "vm" {
+  # The shared service account does not imply a VM dependency on the firewalls.
+  # Install both SSH controls before creating the VM.
+  depends_on = [
+    google_compute_firewall.iap_ssh,
+    google_compute_firewall.deny_other_ssh,
+  ]
   project      = var.project_id
   name         = "lab02-secure-vm"
   zone         = var.zone
