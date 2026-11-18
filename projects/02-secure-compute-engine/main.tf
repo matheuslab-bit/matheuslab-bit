@@ -4,10 +4,14 @@ data "google_compute_network" "existing" {
   name    = "portfolio-vpc"
 }
 
-data "google_compute_subnetwork" "existing" {
-  project = var.project_id
-  name    = "portfolio-subnet"
-  region  = "southamerica-east1"
+resource "google_compute_subnetwork" "lab02" {
+  project                  = var.project_id
+  name                     = "lab02-iowa-subnet"
+  region                   = "us-central1"
+  ip_cidr_range            = "10.20.0.0/24"
+  network                  = data.google_compute_network.existing.self_link
+  stack_type               = "IPV4_ONLY"
+  private_ip_google_access = false
 }
 
 # No project roles, IAM bindings or service account keys are created.
@@ -75,7 +79,7 @@ resource "google_compute_instance" "vm" {
   }
 
   network_interface {
-    subnetwork = data.google_compute_subnetwork.existing.self_link
+    subnetwork = google_compute_subnetwork.lab02.self_link
     # Deliberately no access_config: no external IPv4 address.
     stack_type = "IPV4_ONLY"
   }
@@ -100,15 +104,16 @@ resource "google_compute_instance" "vm" {
   scheduling {
     automatic_restart   = true
     on_host_maintenance = "MIGRATE"
+    provisioning_model  = "STANDARD"
   }
 
   lifecycle {
     precondition {
       condition = (
-        data.google_compute_subnetwork.existing.network == data.google_compute_network.existing.self_link &&
-        data.google_compute_subnetwork.existing.ip_cidr_range == "10.10.0.0/24"
+        google_compute_subnetwork.lab02.network == data.google_compute_network.existing.self_link &&
+        google_compute_subnetwork.lab02.ip_cidr_range == "10.20.0.0/24"
       )
-      error_message = "A subnet deve pertencer à portfolio-vpc e usar 10.10.0.0/24."
+      error_message = "A subnet de Iowa deve pertencer à portfolio-vpc e usar 10.20.0.0/24."
     }
   }
 }
