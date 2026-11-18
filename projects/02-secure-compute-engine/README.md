@@ -93,7 +93,9 @@ Esses comandos verificam sintaxe, formatação e schema do provider. O init baix
 
 O workflow `.github/workflows/02-secure-compute-engine-check.yml` executa os mesmos três checks com Terraform 1.9.8, apenas quando arquivos deste lab/workflow mudam, ou por acionamento manual. Tem apenas `contents: read`, sem credenciais GCP ou autenticação cloud. Não executa plan/apply/destroy. O lockfile deve ficar versionado; sua atualização é uma alteração deliberada a revisar.
 
-Validação local desta preparação (18/11/2026): formatação do Lab 02, init sem backend com lockfile somente para leitura e validate passaram com Terraform 1.17.2 e provider Google 7.46.2. O Lab 01 também passou nos mesmos checks. A checagem adicional de formatação na raiz apontou uma pendência preexistente em `projects/gcp-secure-infrastructure/main.tf`, fora do escopo e preservada. Esta preparação não foi enviada ao GitHub e não tem novo resultado de CI. Não foi executado plan/apply/destroy, autenticação GCP ou consulta dos recursos existentes.
+Validação local desta preparação (18/11/2026): formatação do Lab 02, init sem backend com lockfile somente para leitura e validate passaram com Terraform 1.17.2 e provider Google 7.46.2. O Lab 01 também passou nos mesmos checks. A checagem adicional de formatação na raiz apontou uma pendência preexistente em `projects/gcp-secure-infrastructure/main.tf`, fora do escopo e preservada.
+
+O commit `cda26b578fa704c0e4a78107a1e9e4b9d1f9d978` foi publicado no [PR #3](https://github.com/matheuslab-bit/matheuslab-bit/pull/3). As execuções de CI de [push](https://github.com/matheuslab-bit/matheuslab-bit/actions/runs/44231825713) e [pull request](https://github.com/matheuslab-bit/matheuslab-bit/actions/runs/44231850656) passaram nos três checks do Lab 02 com Terraform 1.9.8 e provider Google 7.46.2. Esses resultados se referem a esse commit; alterações posteriores devem ser verificadas em suas próprias execuções. Não foi executado plan/apply/destroy, autenticação GCP ou consulta dos recursos existentes. A validação operacional no GCP continua pendente.
 
 ## Operação futura — exige nova autorização
 
