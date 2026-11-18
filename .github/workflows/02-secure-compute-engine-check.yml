@@ -1,0 +1,36 @@
+name: Secure Compute Engine lab Terraform validation
+
+on:
+  push:
+    paths:
+      - "projects/02-secure-compute-engine/**"
+      - ".github/workflows/02-secure-compute-engine-check.yml"
+  pull_request:
+    paths:
+      - "projects/02-secure-compute-engine/**"
+      - ".github/workflows/02-secure-compute-engine-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Format and validate secure VM lab
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/02-secure-compute-engine
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+      - name: Initialize providers without a backend
+        run: terraform init -backend=false -lockfile=readonly -input=false
+      - name: Validate configuration
+        run: terraform validate
