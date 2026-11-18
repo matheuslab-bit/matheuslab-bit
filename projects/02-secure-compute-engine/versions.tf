@@ -1,0 +1,16 @@
+terraform {
+  required_version = ">= 1.9.8, < 2.0.0"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "7.46.2"
+    }
+  }
+}
+
+provider "google" {
+  project = var.project_id
+  region  = "southamerica-east1"
+  zone    = var.zone
+}
