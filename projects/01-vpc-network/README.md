@@ -17,7 +17,7 @@ Esta integração não executa implantação no Google Cloud. A existência de e
 
 ## Verificação desta integração
 
-A formatação (`terraform fmt -check -recursive`), a inicialização sem backend com lockfile somente para leitura e `terraform validate` passaram localmente com Terraform 1.17.2 e provedor Google 7.46.2. O workflow com Terraform 1.9.8 ainda não foi executado no GitHub. Nenhum `plan`, `apply` ou `destroy` foi executado nesta integração.
+A formatação (`terraform fmt -check -recursive`), a inicialização sem backend com lockfile somente para leitura e `terraform validate` passaram localmente com Terraform 1.17.2 e provedor Google 7.46.2. As duas execuções do GitHub Actions (`push` e `pull_request`) foram concluídas com sucesso com Terraform 1.9.8, validando `terraform fmt -check -recursive`, `terraform init -backend=false -lockfile=readonly` e `terraform validate`. Nenhum `plan`, `apply` ou `destroy` foi executado nesta integração.
 
 ## Pré-requisitos
 
