@@ -1,47 +1,63 @@
-# Laboratório 02 — Secure Compute Engine em Iowa
+# Lab 02 — Secure Compute Engine in Iowa
 
-VM Linux privada no projeto `driven-surface-513117-k0`, na região `us-central1`, elegível ao Free Tier. A mudança para Iowa foi autorizada em 18/11/2026 para reduzir custos, preservando a infraestrutura existente de São Paulo.
+[English](README.md) | [Português (Brasil)](README.pt-BR.md)
 
-## Arquitetura e propriedade dos recursos
+**Status: deployed and SSH access tested (November 18, 2026).** This lab provisions a private Debian 12 `e2-micro` virtual machine in `us-central1-a` using Terraform. The administrator successfully connected through Identity-Aware Proxy (IAP) and IAM-based OS Login, as reported during the lab. The Iowa deployment was merged in [PR #4](https://github.com/matheuslab-bit/matheuslab-bit/pull/4) after CI checks passed.
 
-| Componente | Configuração | Gestão |
-|---|---|---|
-| VPC existente | `portfolio-vpc`, consultada por data source | Lab 01, preservada |
-| Subnet de São Paulo | `portfolio-subnet`, `southamerica-east1`, `10.10.0.0/24` | Lab 01, preservada |
-| Nova subnet de Iowa | `lab02-iowa-subnet`, `us-central1`, `10.20.0.0/24`, IPv4 | Lab 02 |
-| VM | `lab02-secure-vm`, `us-central1-a`, `e2-micro`, STANDARD | Lab 02 |
-| Disco de boot | 10 GB `pd-standard`, Debian 12, auto_delete | Parte da VM |
-| Conta dedicada | `lab02-secure-vm`, sem chaves ou papéis de aplicação | Lab 02 |
-| Firewall SSH | Allow IAP 900; deny outras origens 901 | Lab 02 |
+This is a **learning environment**, not a production-ready service or a guarantee of zero cloud charges.
 
-A VPC é global: adicionar uma subnet em Iowa não move a subnet de São Paulo. O Lab 02 gerencia sua própria subnet para não acessar nem modificar o state do Lab 01. Não copiar states entre laboratórios. A faixa `10.20.0.0/24` deve permanecer livre de sobreposição; foi conferida na VPC antes da implantação.
+## Architecture
 
-O plano inicial esperado contém **5 adições, 0 alterações e 0 exclusões**: subnet, conta de serviço, duas regras e VM (incluindo o disco). Uma VM já implantada em outra região exigiria uma revisão de migração; esta adaptação foi preparada quando o projeto não tinha VMs nem discos.
+```mermaid
+flowchart LR
+    Admin["Administrator"] -->|"SSH via IAP + OS Login"| IAP["Identity-Aware Proxy"]
+    subgraph GCP["Google Cloud project"]
+      VPC["Existing portfolio-vpc<br/>preserved"]
+      SP["São Paulo subnet<br/>10.10.0.0/24<br/>Lab 01"]
+      Iowa["Iowa subnet<br/>10.20.0.0/24<br/>Lab 02"]
+      VM["Private Debian 12 e2-micro<br/>no external IP"]
+      VPC --- SP
+      VPC --- Iowa
+      Iowa --> VM
+    end
+    IAP -->|"TCP/22, 35.235.240.0/20"| VM
+```
 
-## Segurança e limites
+| Component | Configuration | Terraform ownership |
+| --- | --- | --- |
+| Existing VPC | `portfolio-vpc`, read through a data source | Lab 01; preserved |
+| São Paulo subnet | `portfolio-subnet`, `southamerica-east1`, `10.10.0.0/24` | Lab 01; preserved |
+| Iowa subnet | `lab02-iowa-subnet`, `us-central1`, `10.20.0.0/24` | Lab 02 |
+| Virtual machine | `lab02-secure-vm`, `us-central1-a`, `e2-micro` | Lab 02 |
+| Boot disk | 10 GB `pd-standard`, Debian 12, auto-delete | Attached to the VM |
+| Service account | Dedicated `lab02-secure-vm` service account, no application IAM roles or keys | Lab 02 |
+| SSH firewall | Allow IAP at priority 900; deny other IPv4 sources at 901 | Lab 02 |
 
-- VM sem IP público e sem IPv6; nenhum bloco `access_config`.
-- SSH TCP/22 permitido apenas de `35.235.240.0/20` (IAP), prioridade 900. Deny de `0.0.0.0/0`, prioridade 901. Ambas as regras têm como alvo somente a conta dedicada; não reutilizar essa conta em outras VMs.
-- A VM depende explicitamente das duas regras. Revisar também políticas efetivas e regras de prioridade superior antes da implantação.
-- OS Login ativo; chaves SSH do projeto bloqueadas; acesso serial desativado.
-- Secure Boot, vTPM e integrity monitoring ativos. Isso não instala agente de observabilidade.
-- Conta dedicada sem chaves e sem concessões IAM de aplicação. O scope `cloud-platform` não concede papéis IAM.
-- Nenhum recurso IAM de binding ou habilitação de API é gerenciado aqui. Não ampliar permissões como contorno de erros.
-- Sem NAT, proxy, startup script ou instalação de pacotes. Private Google Access explicitamente desabilitado somente na nova subnet. A subnet de São Paulo não é alterada.
-- IAP fornece entrada administrativa, não saída para internet. Atualizações Debian e downloads exigem um caminho de saída aprovado separadamente. Comunicação interna continua sujeita a rotas e firewall; ausência de NAT não representa bloqueio de toda saída.
-- A família Debian 12 pode resolver para uma imagem diferente em planos futuros. Não apresentar esta VM como atualizada ou pronta para produção sem estratégia de patches e validação operacional.
+A VPC is a global resource: adding an Iowa subnet does not migrate the São Paulo subnet. Lab 02 has **its own Terraform state** and must not modify Lab 01's state. The network range was checked for overlap before deployment. The initial expected plan was five additions and no changes or deletions (subnet, service account, two firewall rules and VM).
 
-## Pré-requisitos
+## Security decisions
 
-Faturamento ativo, capacidade de `e2-micro` e disco em Iowa, VPC existente e APIs Compute, IAM, IAP e OS Login habilitadas. Não habilitar outras APIs como parte desta adaptação.
+- **No public IP or IPv6** is configured for the VM.
+- **IAP-only SSH:** TCP/22 allows the IAP range `35.235.240.0/20` at priority 900; a deny rule for `0.0.0.0/0` follows at priority 901. Both target only the VM's dedicated service account. The VM explicitly depends on both rules.
+- **OS Login enabled:** project-wide SSH keys are blocked, and serial console access is disabled.
+- **Shielded VM:** Secure Boot, vTPM and integrity monitoring are enabled.
+- **Identity isolation:** the service account has no application IAM roles, and no keys are created. The `cloud-platform` API scope is not an IAM role.
+- **Limited networking:** no Cloud NAT, public IPv4 address, startup script or package installation is provisioned. Private Google Access is disabled on the new subnet only.
+- **No automatic permission escalation:** the lab does not grant IAM bindings or enable APIs. Any missing access should be investigated and approved separately.
 
-A identidade que executa Terraform precisa de leitura da VPC/imagens, uso e gestão da nova subnet, criação da VM/disco, gestão das duas regras e da conta dedicada, além de `iam.serviceAccounts.actAs` na conta anexada. Não confundir administração da conta com actAs; não conceder Owner/Editor para resolver falhas. A revisão operacional deve verificar os acessos já existentes antes de considerar novas concessões.
+IAP provides an administrative ingress path, not general internet egress. OS updates and arbitrary package downloads would require a separately approved egress design. Verify effective policies before interpreting a firewall rule as the only applicable control.
 
-Para SSH: acesso IAP, OS Login (ou OS Admin Login para sudo), descoberta da instância e Service Account User na conta anexada, conforme os requisitos do Google. Não adicionar bindings automaticamente. Se faltarem permissões, interromper e registrar o requisito exato.
+## Prerequisites and permissions
 
-## Validação e execução
+The Google Cloud project needs billing, available `e2-micro` capacity in Iowa, the existing VPC, and the Compute Engine, IAM, IAP and OS Login APIs.
 
-Executar exclusivamente nesta pasta. Terraform compatível com `>= 1.9.8, < 2.0.0`; CI usa 1.9.8. Provider Google **7.46.2**, preservando o lockfile versionado.
+The Terraform identity needs read access to the existing VPC/images and narrowly scoped permissions to create the Iowa subnet, VM/disk, firewall rules and dedicated service account, including `iam.serviceAccounts.actAs` for the attached identity. Do not grant `Owner` or `Editor` merely to resolve permissions errors.
+
+For human SSH access, review IAP tunnel access, OS Login (or OS Admin Login for sudo), instance discovery and the required service-account usage permissions.
+
+## Terraform validation and deployment
+
+Run commands **only** from `projects/02-secure-compute-engine/`. The supported Terraform range is `>= 1.9.8, < 2.0.0`. CI uses Terraform 1.9.8 with Google provider **7.46.2** pinned through the committed lockfile.
 
 ```powershell
 terraform fmt -check -recursive
@@ -50,38 +66,42 @@ terraform validate
 terraform plan -input=false -out=lab02-iowa.tfplan
 ```
 
-O init é necessário somente se os providers ainda não estiverem preparados. `-lockfile=readonly` é opção de init, não de plan. Revisar o plano salvo antes do apply; não aplicar o plano antigo de São Paulo. Não executar outros projetos do repositório.
+Inspect the saved plan before `terraform apply lab02-iowa.tfplan`. Never apply an obsolete São Paulo plan or run Terraform from the root/other labs. The `-lockfile=readonly` option belongs to `init`, not `plan`.
 
-Após implantação, conferir o output `ssh_command` e executar SSH pelo IAP:
+Connect with IAP after applying:
 
 ```powershell
-gcloud compute ssh lab02-secure-vm --project=driven-surface-513117-k0 --zone=us-central1-a --tunnel-through-iap
+gcloud compute ssh lab02-secure-vm --project=YOUR_PROJECT_ID --zone=us-central1-a --tunnel-through-iap
 ```
 
-Conferir ausência de IP externo, tipo/tamanho do disco, três opções Shielded, subnet correta e funcionamento do OS Login. Uma verificação com `terraform plan` deve retornar ausência de alterações.
+The deployment test confirmed a running private VM and working IAP/OS Login SSH access on November 18, 2026. Verify the VM has no external IP, the 10 GB standard boot disk, the three Shielded settings and the correct Iowa subnet. A follow-up `terraform plan` should show no changes; this remains a recommended drift check unless separately recorded.
 
-## Custos
+## Cost controls
 
-O Free Tier inclui o equivalente mensal de uma `e2-micro` não preemptiva nas regiões `us-central1`, `us-west1` ou `us-east1`, e 30 GB-mês de disco padrão nas regiões elegíveis, dentro dos limites da conta de faturamento. Esta configuração usa uma VM e 10 GB; não inclui IP público, NAT, snapshots, balanceador ou imagem premium.
+The Google Cloud Free Tier provides limited usage of an eligible non-preemptible `e2-micro` in selected US regions and a shared standard persistent-disk allowance, subject to current billing terms. This lab uses one `e2-micro` in Iowa and a 10 GB `pd-standard` disk, but **Free Tier eligibility is not a guarantee of zero cost**. Shared monthly usage, other projects, traffic, taxes and additional services can incur charges.
 
-A franquia é compartilhada: outros projetos e uso anterior no mês podem consumi-la. Inventário atual vazio não comprova ausência de consumo histórico. Estimativa de VM e disco: US$0 dentro da franquia; fora dela, consultar preços atuais de Iowa e considerar impostos e tráfego. O usuário definiu US$10/mês como teto aceitável para o Lab 02; isso não configura bloqueio automático de faturamento. Não prometer custo zero absoluto.
+This design does not create Cloud NAT, public IPs, snapshots or load balancers. Configure billing budgets and alerts, but note that alerts do not automatically disable billing. Review current pricing before changing the architecture.
 
-## Estado e manutenção
+## State safety and lifecycle
 
-O state local pertence exclusivamente ao Lab 02. Não versionar `.terraform/`, state, planos, tfvars, credenciais, chaves ou logs. Manter uma única cópia operacional do state e não executar applies concorrentes.
+- Keep Terraform state, `.terraform/`, plans, tfvars, credentials, keys and logs out of Git.
+- Maintain a single operational copy of this lab's state; avoid concurrent applies.
+- **No destruction or cleanup was authorized as part of this lab.** Preserve the São Paulo VPC/subnet. Review resource ownership before any future removal.
+- The Debian 12 image family may resolve to a newer image in later plans. A patching and egress strategy would be needed before claiming production readiness.
 
-Nenhuma limpeza ou destruição está autorizada neste fluxo. A VPC e a subnet de São Paulo devem permanecer. Qualquer remoção futura exige autorização separada e revisão dos recursos afetados; nunca executar destroy do Lab 01 para limpar o Lab 02.
+## Evidence and history
 
-## Histórico
+- [PR #3](https://github.com/matheuslab-bit/matheuslab-bit/pull/3): established firewall ordering and the VM dependency on the allow/deny rules.
+- [PR #4](https://github.com/matheuslab-bit/matheuslab-bit/pull/4): merged the Iowa Free Tier-oriented configuration after CI validation.
+- November 18, 2026: private VM deployed and IAP/OS Login SSH tested successfully, as recorded during the hands-on session.
+- Future improvement: add sanitized verification output or screenshots without project secrets, account identifiers or sensitive metadata.
 
-O PR #3, integrado por `554bf71`, estabeleceu prioridades 900/901 e dependência explícita da VM nas regras. A adaptação para Iowa mantém esses controles e acrescenta uma subnet exclusiva do Lab 02. A preparação anterior foi validada com Terraform 1.17.2 e provider 7.46.2; cada nova revisão precisa de seus próprios checks.
+## References
 
-## Referências
-
-- [Free Tier e limites compartilhados](https://docs.cloud.google.com/free/docs/free-cloud-features?hl=pt-br)
-- [Preços de VM](https://cloud.google.com/products/compute/pricing/general-purpose)
-- [Preços de discos](https://cloud.google.com/compute/disks-image-pricing)
+- [Google Cloud Free Tier](https://docs.cloud.google.com/free/docs/free-cloud-features)
+- [Compute Engine pricing](https://cloud.google.com/products/compute/pricing/general-purpose)
+- [Persistent disk pricing](https://cloud.google.com/compute/disks-image-pricing)
 - [IAP TCP forwarding](https://docs.cloud.google.com/iap/docs/using-tcp-forwarding)
 - [OS Login](https://docs.cloud.google.com/compute/docs/oslogin/set-up-oslogin)
-- [Service accounts e actAs](https://docs.cloud.google.com/iam/docs/service-accounts-actas)
-- [Prioridade de firewall](https://docs.cloud.google.com/firewall/docs/firewalls)
+- [Service accounts and actAs](https://docs.cloud.google.com/iam/docs/service-accounts-actas)
+- [Firewall rules](https://docs.cloud.google.com/firewall/docs/firewalls)
