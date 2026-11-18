@@ -15,5 +15,5 @@ output "service_account_email" {
 
 output "ssh_command" {
   description = "Comando para acesso futuro, após autorização de implantação e configuração IAM."
-  value       = "gcloud compute ssh ${google_compute_instance.vm.name} --project=${local.project_id} --zone=${var.zone} --tunnel-through-iap"
+  value       = "gcloud compute ssh ${google_compute_instance.vm.name} --project=${var.project_id} --zone=${var.zone} --tunnel-through-iap"
 }

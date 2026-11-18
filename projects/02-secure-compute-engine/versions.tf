@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "google" {
-  project = "driven-surface-513117-k0"
+  project = var.project_id
   region  = "southamerica-east1"
   zone    = var.zone
 }

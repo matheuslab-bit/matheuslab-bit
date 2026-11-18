@@ -1,28 +1,24 @@
-locals {
-  project_id = "driven-surface-513117-k0"
-}
-
 # Read existing Lab 01 resources through the API, without accessing its state.
 data "google_compute_network" "existing" {
-  project = local.project_id
+  project = var.project_id
   name    = "portfolio-vpc"
 }
 
 data "google_compute_subnetwork" "existing" {
-  project = local.project_id
+  project = var.project_id
   name    = "portfolio-subnet"
   region  = "southamerica-east1"
 }
 
 # No project roles, IAM bindings or service account keys are created.
 resource "google_service_account" "vm" {
-  project      = local.project_id
+  project      = var.project_id
   account_id   = "lab02-secure-vm"
   display_name = "Lab 02 VM - no application permissions"
 }
 
 resource "google_compute_firewall" "iap_ssh" {
-  project                 = local.project_id
+  project                 = var.project_id
   name                    = "lab02-allow-iap-ssh"
   network                 = data.google_compute_network.existing.self_link
   direction               = "INGRESS"
@@ -38,7 +34,7 @@ resource "google_compute_firewall" "iap_ssh" {
 
 # Prevent lower-priority broad VPC allow rules from exposing SSH to this VM.
 resource "google_compute_firewall" "deny_other_ssh" {
-  project                 = local.project_id
+  project                 = var.project_id
   name                    = "lab02-deny-other-ssh"
   network                 = data.google_compute_network.existing.self_link
   direction               = "INGRESS"
@@ -53,7 +49,7 @@ resource "google_compute_firewall" "deny_other_ssh" {
 }
 
 resource "google_compute_instance" "vm" {
-  project      = local.project_id
+  project      = var.project_id
   name         = "lab02-secure-vm"
   zone         = var.zone
   machine_type = "e2-micro"

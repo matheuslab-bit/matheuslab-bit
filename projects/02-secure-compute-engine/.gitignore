@@ -12,7 +12,17 @@ override.tf.json
 *_override.tf.json
 *.pem
 *.key
-*.json
+# Credential/secret JSON only; keep legitimate JSON configuration versionable.
+application_default_credentials.json
+credentials.json
+credentials-*.json
+*-credentials.json
+service-account*.json
+*-service-account.json
+*-key.json
+secrets.json
+secrets-*.json
+*-secrets.json
 .env
 .env.*
 *.log
