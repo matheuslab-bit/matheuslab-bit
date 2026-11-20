@@ -1,11 +1,10 @@
 variable "project_id" {
-  description = "Projeto-alvo fixo deste laboratório."
+  description = "ID do projeto Google Cloud de destino onde os recursos do Lab 02 são provisionados."
   type        = string
-  default     = "driven-surface-513117-k0"
 
   validation {
-    condition     = var.project_id == "driven-surface-513117-k0"
-    error_message = "Este laboratório deve usar o projeto driven-surface-513117-k0."
+    condition     = can(regex("^[a-z][a-z0-9-]{4,28}[a-z0-9]$", var.project_id))
+    error_message = "Informe um ID de projeto Google Cloud válido (6 a 30 letras minúsculas, dígitos ou hífens)."
   }
 }
 

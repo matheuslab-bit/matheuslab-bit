@@ -1,5 +1,5 @@
 output "instance_name" {
-  description = "Nome da VM após futura implantação autorizada."
+  description = "Nome da VM privada implantada em Iowa."
   value       = google_compute_instance.vm.name
 }
 
@@ -14,11 +14,11 @@ output "subnet_name" {
 }
 
 output "service_account_email" {
-  description = "Service account dedicada, sem papéis de aplicação concedidos pelo laboratório."
+  description = "Service account dedicada da VM, sem papéis de aplicação concedidos pelo laboratório."
   value       = google_service_account.vm.email
 }
 
 output "ssh_command" {
-  description = "Comando para acesso futuro, após autorização de implantação e configuração IAM."
+  description = "Comando para conexão administrativa SSH via túnel IAP e OS Login."
   value       = "gcloud compute ssh ${google_compute_instance.vm.name} --project=${var.project_id} --zone=${var.zone} --tunnel-through-iap"
 }
