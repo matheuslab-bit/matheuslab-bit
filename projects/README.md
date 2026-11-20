@@ -15,9 +15,9 @@ This folder contains reproducible Google Cloud learning labs. Each project's sta
 
 **Cost note:** The Iowa `e2-micro` and 10 GB `pd-standard` disk may qualify for Google Cloud's Free Tier within its usage limits. Billing and other services can still incur charges.
 
-## Earlier design (separate from Labs 01 and 02)
+## Archived prototype
 
-- [GCP Secure Infrastructure](gcp-secure-infrastructure/README.md) — an initial Terraform architecture reference including private compute, security and monitoring. **Not independently deployed or verified.** It must not be confused with the completed Lab 02.
+- [GCP Secure Infrastructure (archived)](archive/gcp-secure-infrastructure/README.md) — initial monolithic Terraform design covering private compute, security and monitoring. Superseded by the modular **Lab 01** and **Lab 02** projects above; preserved in `projects/archive/` so its observability ideas can be reused in future labs.
 
 ## Planned projects
 

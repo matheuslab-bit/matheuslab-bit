@@ -1,6 +1,20 @@
-# GCP Secure Infrastructure
+# GCP Secure Infrastructure (Archived Initial Prototype)
 
-**Status: Terraform configuration prepared; not deployed to a live Google Cloud project.**
+> **Archived Prototype (English):** This initial monolithic Terraform design is **archived for historical reference** and was never deployed as a standalone project. It has been superseded by the modular portfolio labs:
+> - **[Lab 01 — VPC Networking](../../01-vpc-network/README.md)** (custom VPC and regional subnet management)
+> - **[Lab 02 — Secure Compute Engine](../../02-secure-compute-engine/README.md)** (private Debian 12 VM in Iowa, IAP-only SSH, OS Login, Shielded VM, and dedicated service account)
+>
+> Its observability and logging concepts (Cloud Monitoring CPU alert policy, least-privilege logging/monitoring IAM roles, and optional VPC Flow Logs / firewall rule logging) are preserved here to be reused in a dedicated future observability lab.
+>
+> ---
+>
+> **Protótipo Arquivado (Português):** Este projeto monolítico inicial em Terraform está **arquivado como referência histórica** e não foi implantado de forma independente. Ele foi sucedido pelos laboratórios modulares do portfólio:
+> - **[Laboratório 01 — Redes VPC](../../01-vpc-network/README.pt-BR.md)** (VPC personalizada e sub-rede regional)
+> - **[Laboratório 02 — Compute Engine Seguro](../../02-secure-compute-engine/README.pt-BR.md)** (VM Debian 12 privada em Iowa, SSH exclusivo via IAP, OS Login, Shielded VM e conta de serviço dedicada)
+>
+> Os conceitos de observabilidade e logs deste protótipo (política de alerta de CPU no Cloud Monitoring, papéis IAM mínimos de logging/monitoring e ativação opcional de VPC Flow Logs e logs de firewall) permanecem preservados aqui para reaproveitamento em um laboratório futuro dedicado.
+
+**Status: Archived design reference; superseded by Labs 01 and 02.**
 
 A hands-on portfolio project for learning how to build a small, security-focused Google Cloud environment with Terraform.
 

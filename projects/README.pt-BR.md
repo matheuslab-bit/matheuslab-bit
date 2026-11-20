@@ -15,9 +15,9 @@ Esta pasta reúne laboratórios reproduzíveis de estudo em Google Cloud. O stat
 
 **Custos:** A máquina `e2-micro` em Iowa e o disco `pd-standard` de 10 GB podem se enquadrar no Free Tier do Google Cloud dentro dos limites de uso. Faturamento e outros serviços ainda podem gerar cobranças.
 
-## Projeto inicial (separado dos Labs 01 e 02)
+## Protótipo arquivado
 
-- [GCP Secure Infrastructure](gcp-secure-infrastructure/README.md) — referência inicial de arquitetura Terraform para computação privada, segurança e monitoramento. **Não foi implantado nem verificado de forma independente.** Não confundir com o Lab 02 concluído.
+- [GCP Secure Infrastructure (arquivado)](archive/gcp-secure-infrastructure/README.md) — protótipo monolítico inicial em Terraform cobrindo computação privada, segurança e monitoramento. Foi sucedido pelos projetos modulares **Lab 01** e **Lab 02** acima e permanece preservado em `projects/archive/` para reaproveitamento futuro de suas ideias de observabilidade.
 
 ## Próximos projetos planejados
 
