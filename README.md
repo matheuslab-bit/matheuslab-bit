@@ -23,11 +23,9 @@ The Lab 02 infrastructure reuses the existing VPC without moving or replacing th
 
 ## Technical focus
 
-- **Cloud:** Google Cloud, Compute Engine, VPC, IAM, IAP, OS Login, Cloud Monitoring
-- **Infrastructure as Code:** Terraform, Git, GitHub Actions
-- **Systems and networking:** Linux, Windows, TCP/IP, DNS, firewalls and technical troubleshooting
-- **Professional background:** SIP/VoIP operations, incident investigation and infrastructure support
-- **Next steps:** Cloud Run, containers, observability, automation and the Google Cloud Associate Cloud Engineer certification
+- **Demonstrated in published labs:** Google Cloud VPC design, Compute Engine (private Debian 12 VM, Shielded VM), IAM service account isolation, IAP TCP forwarding, OS Login, stateful VPC firewall ordering, Terraform, Git, and GitHub Actions CI validation
+- **Systems and networking foundation:** Linux, Windows Server/Active Directory, VMware, Hyper-V, TCP/IP, DNS, firewalls, and SIP/VoIP infrastructure troubleshooting
+- **Active study & upcoming labs:** Terraform Remote State (Cloud Storage), Workload Identity Federation (keyless CI/CD), Cloud Monitoring and Cloud Logging, Cloud NAT, Cloud Run, Artifact Registry, Cloud SQL, Secret Manager, containers, and the Google Cloud Associate Cloud Engineer (ACE) certification
 
 ## How I document my work
 

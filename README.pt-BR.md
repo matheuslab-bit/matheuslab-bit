@@ -23,11 +23,9 @@ O Lab 02 reutiliza a VPC existente sem mover ou substituir a sub-rede de São Pa
 
 ## Foco técnico
 
-- **Nuvem:** Google Cloud, Compute Engine, VPC, IAM, IAP, OS Login, Cloud Monitoring
-- **Infraestrutura como código:** Terraform, Git, GitHub Actions
-- **Sistemas e redes:** Linux, Windows, TCP/IP, DNS, firewalls e diagnóstico técnico
-- **Experiência profissional:** operações SIP/VoIP, análise de incidentes e suporte de infraestrutura
-- **Próximos passos:** Cloud Run, contêineres, observabilidade, automação e certificação Google Cloud Associate Cloud Engineer
+- **Demonstrado nos laboratórios publicados:** redes VPC no Google Cloud, Compute Engine (VM privada Debian 12, Shielded VM), isolamento de contas de serviço IAM, encaminhamento TCP via IAP, OS Login, ordenação de regras de firewall VPC, Terraform, Git e validação de CI com GitHub Actions
+- **Base em sistemas e redes:** Linux, Windows Server/Active Directory, VMware, Hyper-V, TCP/IP, DNS, firewalls e diagnóstico de infraestrutura SIP/VoIP
+- **Estudo ativo e próximos laboratórios:** Terraform Remote State (Cloud Storage), Workload Identity Federation (CI/CD sem chaves), Cloud Monitoring e Cloud Logging, Cloud NAT, Cloud Run, Artifact Registry, Cloud SQL, Secret Manager, contêineres e certificação Google Cloud Associate Cloud Engineer (ACE)
 
 ## Como documento meu trabalho
 
