@@ -39,7 +39,7 @@ Uma decisão arquitetural fundamental em Infraestrutura como Código é: *onde f
 ## Funcionamento do GCS Backend
 
 ### Bloqueio de Estado (State Locking)
-Quando um laboratório utiliza `backend "gcs"`, o Terraform adquire automaticamente um bloqueio distribuído antes de qualquer operação que modifique ou planeje sobre o estado (`plan`, `apply`, `destroy`, `import`). Para isso, ele cria um objeto temporário `.tflock` ao lado do `default.tfstate` usando pré-condições atômicas do GCS. Se uma segunda execução for iniciada simultaneamente, o Terraform interrompe a operação imediatamente, impedindo corrupção do estado.
+Quando um laboratório utiliza `backend "gcs"`, o Terraform adquire automaticamente um bloqueio distribuído antes de qualquer operação que possa ler ou modificar o estado (`plan`, `apply`, `destroy`, `import`), mesmo que o `plan` em si não grave o estado. Para isso, ele cria um objeto temporário `.tflock` ao lado do `default.tfstate` usando pré-condições atômicas do GCS. Se uma segunda execução for iniciada simultaneamente, o Terraform interrompe a operação imediatamente, impedindo corrupção do estado.
 
 ### Versionamento de Objetos, Ciclo de Vida de 90 Dias e Soft Delete de 7 Dias
 - **Versionamento (`versioning.enabled = true`):** cada `terraform apply` grava uma nova geração ativa (`default.tfstate`). O estado anterior não é perdido: o GCS o preserva como uma versão **não atual (`ARCHIVED`)** identificada por um número exclusivo de geração (`generation`).
@@ -60,6 +60,13 @@ Quando um laboratório utiliza `backend "gcs"`, o Terraform adquire automaticame
 - **`deletion_policy = "PREVENT"`:** aplica proteção contra exclusão no nível do provedor Google `7.46.2`, bloqueando chamadas de remoção do bucket mesmo em operações de destroy.
 - **`lifecycle.prevent_destroy = true`:** faz com que o motor do Terraform recuse qualquer plano de execução que tente destruir o bucket de estados. **Limite importante:** `prevent_destroy`, `deletion_policy = "PREVENT"` e `force_destroy = false` protegem apenas contra exclusões acidentais disparadas via Terraform; eles **não substituem backups dos states** (observe que backups locais armazenados fora do repositório no mesmo disco não protegem contra falha física do disco) e **não impedem exclusões manuais realizadas fora do Terraform** (como pelo Console do Google Cloud, `gcloud storage rm` ou chamadas diretas à API por identidades com permissão administrativa).
 - **Sem identificadores fixos ou dados pessoais:** tanto `project_id` quanto `bucket_name` são variáveis obrigatórias fornecidas localmente via `terraform.tfvars` (ignorado pelo Git). Utilize um nome de bucket opaco e neutro (por exemplo, `gcp-portfolio-tfstate-usc1-<sufixo-aleatorio>`) que não inclua o Project ID do Google Cloud nem informações pessoais.
+
+### Scan de Segurança e Risco Aceito
+O workflow compartilhado [`terraform-ci.yml`](../../.github/workflows/terraform-ci.yml) executa o Checkov neste laboratório: as verificações de versionamento, acesso uniforme no bucket e prevenção de acesso público são aprovadas. Um achado é risco aceito, documentado com `#checkov:skip` no próprio [`main.tf`](main.tf):
+
+| Verificação | Decisão |
+| --- | --- |
+| `CKV_GCP_62` — Logs de acesso ao bucket | Logs de uso exigiriam um segundo bucket de logs; alterações no bucket já são registradas pelo Cloud Audit Logs (Admin Activity). |
 
 ### Permissões IAM Necessárias
 - **Para provisionar o bucket (Lab 03):** a identidade que executa o Terraform precisa de `storage.buckets.create`, `storage.buckets.get` e `storage.buckets.update` no projeto de destino (por exemplo, `roles/storage.admin` no projeto ou papel customizado de bootstrap).

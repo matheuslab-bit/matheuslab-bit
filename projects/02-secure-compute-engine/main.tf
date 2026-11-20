@@ -5,6 +5,8 @@ data "google_compute_network" "existing" {
 }
 
 resource "google_compute_subnetwork" "lab02" {
+  #checkov:skip=CKV_GCP_26:VPC Flow Logs are deferred to the planned monitoring lab to avoid log ingestion costs in a learning environment.
+  #checkov:skip=CKV_GCP_74:Private Google Access is intentionally disabled; the VM has no approved egress path in this lab.
   project                  = var.project_id
   name                     = "lab02-iowa-subnet"
   region                   = "us-central1"
@@ -53,6 +55,7 @@ resource "google_compute_firewall" "deny_other_ssh" {
 }
 
 resource "google_compute_instance" "vm" {
+  #checkov:skip=CKV_GCP_38:The boot disk uses Google-managed encryption; customer-managed keys are planned for a future Cloud KMS lab.
   # The shared service account does not imply a VM dependency on the firewalls.
   # Install both SSH controls before creating the VM.
   depends_on = [
@@ -113,7 +116,7 @@ resource "google_compute_instance" "vm" {
         google_compute_subnetwork.lab02.network == data.google_compute_network.existing.self_link &&
         google_compute_subnetwork.lab02.ip_cidr_range == "10.20.0.0/24"
       )
-      error_message = "A subnet de Iowa deve pertencer à portfolio-vpc e usar 10.20.0.0/24."
+      error_message = "The Iowa subnet must belong to portfolio-vpc and use 10.20.0.0/24."
     }
   }
 }

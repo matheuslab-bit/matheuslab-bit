@@ -49,24 +49,26 @@ flowchart LR
 
 A formatação local (`terraform fmt -check -recursive`), o `terraform validate` e o `terraform plan` (com state locking no GCS) passaram utilizando Terraform `1.17.2` e provedor Google `7.46.2`.
 
-No GitHub Actions ([`01-vpc-network-check.yml`](../../.github/workflows/01-vpc-network-check.yml)), as execuções de `push` e `pull_request` foram concluídas com sucesso em `ubuntu-latest` utilizando Terraform `1.9.8`:
+No GitHub Actions, o workflow compartilhado [`terraform-ci.yml`](../../.github/workflows/terraform-ci.yml) valida este laboratório em `ubuntu-latest` com Terraform `1.9.8` (a versão mínima suportada) e executa um scan de segurança com Checkov. O CI utiliza `-backend=false` para executar validação estática de sintaxe e esquema sem credenciais da nuvem.
 
-```powershell
-terraform fmt -check -recursive
-terraform init -backend=false -lockfile=readonly
-terraform validate
-```
+## Scan de Segurança e Riscos Aceitos
 
-O CI utiliza `-backend=false` para executar validação estática de sintaxe e esquema sem exigir credenciais da nuvem.
+Os achados do Checkov para este laboratório estão registrados como riscos aceitos, com comentários `#checkov:skip` no próprio [`main.tf`](main.tf):
+
+| Verificação | Decisão |
+| --- | --- |
+| `CKV_GCP_26` — VPC Flow Logs | Adiado para o laboratório de monitoramento planejado, evitando custos de ingestão de logs. |
+| `CKV_GCP_74` — Private Google Access | Ainda não há cargas de trabalho na sub-rede de São Paulo; habilitar quando alguma precisar das APIs do Google. |
+| `CKV2_GCP_18` — Firewall da rede | As regras de firewall pertencem a cada laboratório de carga de trabalho (o Lab 02 define suas regras de allow/deny para o IAP). |
 
 ## Pré-requisitos
 
-- Terraform `1.9.8` ou versão `1.x` compatível (o workflow utiliza `1.9.8`).
+- Terraform `>= 1.9.8, < 2.0.0` (o CI utiliza `1.9.8`).
 - Projeto Google Cloud com faturamento e Compute Engine API habilitados.
 - Acesso ao bucket de estado remoto (`roles/storage.objectAdmin` no bucket) e permissões para gerenciar redes VPC ao executar `plan` ou `apply` conectado ao backend remoto.
 - Google Cloud CLI (`gcloud`) para autenticação local via Application Default Credentials.
 
-A restrição do provedor Google é `~> 7.0`, com a versão `7.46.2` fixada em `.terraform.lock.hcl`.
+As versões estão declaradas em [`versions.tf`](versions.tf): provedor Google fixado em `7.46.2`, igual ao `.terraform.lock.hcl`. As entradas são validadas (formato do `project_id` e `subnet_cidr` como faixa IPv4 CIDR válida).
 
 ## Validação sem Credenciais de Nuvem
 
@@ -74,7 +76,7 @@ Execute a partir de `projects/01-vpc-network/` em um ambiente limpo ou runner de
 
 ```powershell
 terraform fmt -check -recursive
-terraform init -backend=false -lockfile=readonly
+terraform init -backend=false -lockfile=readonly -input=false
 terraform validate
 ```
 
@@ -98,7 +100,7 @@ Como o [Laboratório 02](../02-secure-compute-engine/README.pt-BR.md) depende da
 
 ## Checklist de Progresso
 
-- [x] Configuração Terraform importada e documentada (`main.tf`, `variables.tf`, `outputs.tf`, `backend.tf`)
+- [x] Configuração Terraform importada e documentada (`versions.tf`, `main.tf`, `variables.tf`, `outputs.tf`, `backend.tf`)
 - [x] Formatação local (`terraform fmt -check`) e `terraform validate` aprovados
 - [x] Validação automatizada no GitHub Actions (`push` e `pull_request`) aprovada
 - [x] Implantação na nuvem em São Paulo (`portfolio-vpc` e `portfolio-subnet`, `10.10.0.0/24`) verificada via `gcloud compute` e `terraform plan` (`No changes`)

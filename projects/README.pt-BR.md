@@ -30,7 +30,8 @@ Trabalhos ainda planejados não são apresentados como laboratórios concluídos
 ## Lista de qualidade dos projetos
 
 - [x] Versionar código e documentar a arquitetura.
-- [x] Usar validação Terraform e testes automatizados quando aplicável.
+- [x] Usar validação Terraform e testes automatizados quando aplicável ([`terraform-ci.yml`](../.github/workflows/terraform-ci.yml)).
+- [x] Analisar o Terraform com Checkov e documentar cada risco aceito no próprio código.
 - [x] Gerenciar os estados dos laboratórios remotamente em bucket GCS versionado e com state locking.
 - [x] Registrar decisões de segurança e cuidados com custos.
 - [ ] Publicar uma aplicação na nuvem testada com instruções reproduzíveis.

@@ -55,6 +55,16 @@ A Google Cloud VPC is a global resource: adding a subnet in Iowa (`us-central1`)
 - **Ingress vs. egress:** IAP provides administrative SSH ingress, not general internet egress. Debian package updates and external downloads require a separately designed and approved outbound path.
 - **Not production-ready:** the `debian-12` image family can resolve to newer image builds in future plans. Without an approved patching, egress, and monitoring strategy, this VM must not be presented as a production workload.
 
+## Security Scan and Accepted Risks
+
+The shared [`terraform-ci.yml`](../../.github/workflows/terraform-ci.yml) workflow runs Checkov on this lab: **22 checks pass** (no public IP, no default service account, OS Login, blocked project SSH keys, serial port disabled, Shielded VM, no unrestricted SSH/RDP ingress, and others). The remaining findings are accepted risks, documented inline with `#checkov:skip` in [`main.tf`](main.tf):
+
+| Check | Decision |
+| --- | --- |
+| `CKV_GCP_26` — VPC Flow Logs | Deferred to the planned monitoring lab to avoid log ingestion costs. |
+| `CKV_GCP_74` — Private Google Access | Intentionally disabled; the VM has no approved egress path in this lab. |
+| `CKV_GCP_38` — Disk encryption with customer keys | The boot disk uses Google-managed encryption; customer-managed keys are planned for a future Cloud KMS lab. |
+
 ## Prerequisites and Permissions
 
 The target Google Cloud project requires active billing, `e2-micro` and standard persistent disk availability in `us-central1`, the existing `portfolio-vpc` network, the remote state bucket from Lab 03, and the Compute Engine, IAM, IAP, and OS Login APIs enabled.
