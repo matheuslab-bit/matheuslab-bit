@@ -1,7 +1,4 @@
-﻿# Legacy Lab 01 folder (preserve locally, do not version)
-/01-vpc-network/
-
-# Terraform
+﻿# Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
