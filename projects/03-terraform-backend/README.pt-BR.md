@@ -2,9 +2,9 @@
 
 [English](README.md) | [Português (Brasil)](README.pt-BR.md)
 
-**Status: configuração Terraform preparada e validada; implantação na nuvem aguardando autorização.**
+**Status: implantado em Iowa (`us-central1`) em 20 de novembro de 2026; armazena os objetos ativos de estado remoto do Terraform do Lab 01 (`labs/01-vpc-network`) e do Lab 02 (`labs/02-secure-compute-engine`), com objetos temporários `.tflock` utilizados durante operações que exigem state locking.**
 
-Este laboratório define um bucket dedicado e endurecido no **Google Cloud Storage (GCS)** na região `us-central1` (Iowa) para armazenar remotamente os arquivos de estado do Terraform dos laboratórios do portfólio.
+Este laboratório provisiona um bucket dedicado e endurecido no **Google Cloud Storage (GCS)** na região `us-central1` (Iowa) que armazena remotamente os arquivos de estado do Terraform dos laboratórios do portfólio. A configuração e o workflow de CI foram integrados no [PR #9](https://github.com/matheuslab-bit/matheuslab-bit/pull/9); em 20/11/2026, o bucket foi implantado localmente, os estados dos Labs 01 e 02 foram migrados localmente com `terraform init -migrate-state` e os arquivos `backend.tf` dos Labs 01 e 02 foram versionados no [PR #10](https://github.com/matheuslab-bit/matheuslab-bit/pull/10).
 
 ## Objetivo
 
@@ -19,14 +19,14 @@ flowchart TB
     end
     subgraph GCS["Google Cloud Storage — us-central1 (STANDARD)"]
       Bucket["Bucket Dedicado de State<br/>uniform_bucket_level_access = true<br/>public_access_prevention = enforced<br/>versioning = enabled | soft_delete = 7d (604800s)<br/>force_destroy = false | deletion_policy = PREVENT<br/>prevent_destroy = true | exclui ARCHIVED > 90d"]
-      P1["Prefixo: labs/01-vpc-network/<br/>default.tfstate + .tflock"]
-      P2["Prefixo: labs/02-secure-compute-engine/<br/>default.tfstate + .tflock"]
+      P1["Prefixo: labs/01-vpc-network/<br/>default.tfstate (.tflock temporário durante locks)"]
+      P2["Prefixo: labs/02-secure-compute-engine/<br/>default.tfstate (.tflock temporário durante locks)"]
       Bucket --> P1
       Bucket --> P2
     end
     BootTF -->|"Provisiona e governa"| Bucket
-    Lab01["Lab 01 — Redes VPC"] -.->|"backend gcs"| P1
-    Lab02["Lab 02 — Compute Engine Seguro"] -.->|"backend gcs"| P2
+    Lab01["Lab 01 — Redes VPC"] -.->|"backend gcs (migrado)"| P1
+    Lab02["Lab 02 — Compute Engine Seguro"] -.->|"backend gcs (migrado)"| P2
 ```
 
 ### Diferença entre Bucket de Bootstrap e Backend dos Outros Laboratórios
@@ -34,7 +34,7 @@ flowchart TB
 Uma decisão arquitetural fundamental em Infraestrutura como Código é: *onde fica armazenado o estado do próprio bucket de estados?*
 
 - **Estado de bootstrap (este laboratório — Lab 03):** mantém intencionalmente seu próprio `terraform.tfstate` **local** (com cópia de backup local em diretório separado fora do repositório; observe que uma cópia no mesmo disco físico não protege contra falha física da unidade). Armazenar o estado do bucket dentro dele mesmo cria uma dependência circular durante a criação inicial, recuperação de desastres ou eventual destruição. Como o Lab 03 gerencia apenas um único recurso estável (`google_storage_bucket`), manter o estado de bootstrap local com backup local separado do repositório é simples, auditável e evita bloqueios autorreferenciais.
-- **Demais laboratórios (Labs 01, 02 e futuros):** uma vez criado o bucket do Lab 03, cada laboratório configura um bloco `backend "gcs"` apontando para o bucket compartilhado com um **prefixo isolado** (`labs/01-vpc-network`, `labs/02-secure-compute-engine`, etc.). Assim, cada laboratório mantém seu ciclo de vida e seu estado totalmente independentes dentro do mesmo bucket protegido.
+- **Demais laboratórios (Labs 01, 02 e futuros):** com o bucket do Lab 03 implantado, o [Laboratório 01](../01-vpc-network/README.pt-BR.md) e o [Laboratório 02](../02-secure-compute-engine/README.pt-BR.md) configuram blocos `backend "gcs"` (`backend.tf`) apontando para o bucket compartilhado com **prefixos isolados** (`labs/01-vpc-network` e `labs/02-secure-compute-engine`). Assim, cada laboratório mantém seu ciclo de vida e seu estado totalmente independentes dentro do mesmo bucket protegido.
 
 ## Funcionamento do GCS Backend
 
@@ -71,7 +71,7 @@ Quando um laboratório utiliza `backend "gcs"`, o Terraform adquire automaticame
 
 O Free Tier do Google Cloud inclui **5 GB-mês de armazenamento Regional Standard** por mês em regiões elegíveis dos EUA (incluindo `us-central1`), além de franquias mensais de operações Classe A e Classe B, conforme os termos vigentes de faturamento do Google Cloud.
 
-- Um arquivo `.tfstate` típico destes laboratórios ocupa entre **5 KB e 30 KB** (< 0,001% de 5 GB).
+- Os arquivos `.tfstate` migrados dos Labs 01 e 02 somam **~24 KB** (`4,88 KB` + `19,10 KB`, < 0,001% de 5 GB).
 - Mesmo com dezenas de versões antigas retidas por 90 dias, o volume total permanece muito abaixo de 5 MB.
 - **Limites importantes:** a franquia do Free Tier é compartilhada na conta de faturamento; excesso de operações, tráfego de saída entre regiões ou consumo em outros projetos podem gerar cobranças. Alertas de orçamento não bloqueiam gastos automaticamente.
 
@@ -120,16 +120,16 @@ Execute os comandos exclusivamente a partir de `projects/03-terraform-backend/`:
 
 ```powershell
 terraform fmt -check -recursive
-terraform init -backend=false -input=false
+terraform init -backend=false -lockfile=readonly -input=false
 terraform validate
 ```
 
-Para preparar um plano local de implantação após criar seu `terraform.tfvars` (não versionado) a partir de `terraform.tfvars.example`:
+Para inspecionar ou planejar sobre o estado de bootstrap implantado utilizando seu `terraform.tfvars` local não versionado (copiado de `terraform.tfvars.example`):
 
 ```powershell
 Copy-Item terraform.tfvars.example terraform.tfvars
 # Edite terraform.tfvars localmente com seu project_id real e um bucket_name globalmente único
-terraform plan -input=false -out=lab03-backend.tfplan
+terraform plan -input=false
 ```
 
 Não faça commit de `terraform.tfvars`, `*.tfplan` ou `*.tfstate`.
@@ -138,6 +138,6 @@ Não faça commit de `terraform.tfvars`, `*.tfplan` ou `*.tfstate`.
 
 - [x] Configuração Terraform criada (`versions.tf`, `variables.tf`, `main.tf`, `outputs.tf`, `terraform.tfvars.example`)
 - [x] Documentação bilíngue criada (`README.md` e `README.pt-BR.md`)
-- [x] `terraform fmt -check`, `terraform init -backend=false` e `terraform validate` verificados
-- [ ] Autorizar e aplicar a criação do bucket no Google Cloud
-- [ ] Migrar os estados dos Labs 01 e 02 para prefixos isolados no GCS
+- [x] `terraform fmt -check`, `terraform init -backend=false` e `terraform validate` verificados localmente e no GitHub Actions ([PR #9](https://github.com/matheuslab-bit/matheuslab-bit/pull/9))
+- [x] Criação do bucket autorizada e aplicada no Google Cloud (`us-central1`, 20 de novembro de 2026)
+- [x] Estados dos Labs 01 e 02 migrados localmente com `terraform init -migrate-state` (`No changes` verificado) e arquivos `backend.tf` versionados no [PR #10](https://github.com/matheuslab-bit/matheuslab-bit/pull/10)
