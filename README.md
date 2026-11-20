@@ -14,9 +14,10 @@ My goal is to move into a **remote cloud engineering or cloud operations role**.
 | --- | --- | --- |
 | [01 — VPC Networking](projects/01-vpc-network/README.md) | Terraform-managed VPC and regional subnet design in São Paulo; separate state and GitHub Actions validation | **Terraform and CI validated**; deployment evidence is not documented in this lab |
 | [02 — Secure Compute Engine](projects/02-secure-compute-engine/README.md) | Private Debian 12 `e2-micro` VM in Iowa, IAP-only SSH, OS Login, Shielded VM, restricted firewall and 10 GB standard disk | **Deployed; IAP/OS Login SSH tested** (November 18, 2026) |
-| [GCP Secure Infrastructure — initial design](projects/gcp-secure-infrastructure/README.md) | Earlier Terraform reference for a private VM, networking, IAM and monitoring | **Design only; not independently deployed** |
 
 The Lab 02 infrastructure reuses the existing VPC without moving or replacing the São Paulo subnet. Its Iowa location was selected for potential Google Cloud Free Tier eligibility. **Eligibility is not a guarantee of zero charges.**
+
+*Historical reference:* the earlier monolithic prototype is preserved in [`projects/archive/gcp-secure-infrastructure/`](projects/archive/gcp-secure-infrastructure/README.md) and was superseded by the modular labs above.
 
 [Browse the project index](projects/README.md) | [Follow the learning roadmap](ROADMAP.md)
 

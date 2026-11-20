@@ -14,9 +14,10 @@ Meu objetivo é conquistar uma oportunidade **remota em engenharia ou operaçõe
 | --- | --- | --- |
 | [01 — Redes VPC](projects/01-vpc-network/README.pt-BR.md) | VPC e sub-rede regional em São Paulo com Terraform, estados separados e validação pelo GitHub Actions | **Terraform e CI validados**; este laboratório não documenta evidências de implantação |
 | [02 — Compute Engine seguro](projects/02-secure-compute-engine/README.pt-BR.md) | VM Debian 12 `e2-micro` privada em Iowa, SSH apenas por IAP, OS Login, Shielded VM, firewall restritivo e disco padrão de 10 GB | **Implantado; SSH via IAP/OS Login testado** (18 de novembro de 2026) |
-| [Infraestrutura GCP segura — projeto inicial](projects/gcp-secure-infrastructure/README.md) | Referência inicial de Terraform para VM privada, redes, IAM e monitoramento | **Somente projeto; não implantado independentemente** |
 
 O Lab 02 reutiliza a VPC existente sem mover ou substituir a sub-rede de São Paulo. A localização em Iowa foi escolhida para possível elegibilidade ao Free Tier do Google Cloud. **Elegibilidade não garante custo zero.**
+
+*Referência histórica:* o protótipo monolítico inicial permanece preservado em [`projects/archive/gcp-secure-infrastructure/`](projects/archive/gcp-secure-infrastructure/README.md) e foi sucedido pelos laboratórios modulares acima.
 
 [Ver índice dos projetos](projects/README.pt-BR.md) | [Acompanhar plano de estudos](ROADMAP.md)
 
