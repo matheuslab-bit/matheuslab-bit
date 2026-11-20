@@ -1,4 +1,5 @@
 resource "google_storage_bucket" "terraform_state" {
+  #checkov:skip=CKV_GCP_62:Usage logs would need a second log bucket; bucket changes are already recorded by Cloud Audit Logs (Admin Activity).
   project                     = var.project_id
   name                        = var.bucket_name
   location                    = var.region

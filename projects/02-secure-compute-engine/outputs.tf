@@ -1,24 +1,24 @@
 output "instance_name" {
-  description = "Nome da VM privada implantada em Iowa."
+  description = "Name of the private VM deployed in Iowa."
   value       = google_compute_instance.vm.name
 }
 
 output "internal_ip" {
-  description = "IP privado alocado na subnet de Iowa gerenciada pelo Lab 02."
+  description = "Private IP allocated from the Iowa subnet managed by Lab 02."
   value       = google_compute_instance.vm.network_interface[0].network_ip
 }
 
 output "subnet_name" {
-  description = "Subnet exclusiva do Lab 02 em Iowa; a subnet de São Paulo é preservada."
+  description = "Dedicated Lab 02 subnet in Iowa; the São Paulo subnet from Lab 01 is preserved."
   value       = google_compute_subnetwork.lab02.name
 }
 
 output "service_account_email" {
-  description = "Service account dedicada da VM, sem papéis de aplicação concedidos pelo laboratório."
+  description = "Dedicated VM service account, with no application roles granted by this lab."
   value       = google_service_account.vm.email
 }
 
 output "ssh_command" {
-  description = "Comando para conexão administrativa SSH via túnel IAP e OS Login."
+  description = "Administrative SSH command through an IAP tunnel and OS Login."
   value       = "gcloud compute ssh ${google_compute_instance.vm.name} --project=${var.project_id} --zone=${var.zone} --tunnel-through-iap"
 }

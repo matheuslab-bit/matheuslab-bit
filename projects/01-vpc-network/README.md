@@ -49,24 +49,26 @@ flowchart LR
 
 Local formatting (`terraform fmt -check -recursive`), `terraform validate`, and `terraform plan` (with GCS state locking) passed using Terraform `1.17.2` and Google provider `7.46.2`.
 
-In GitHub Actions ([`01-vpc-network-check.yml`](../../.github/workflows/01-vpc-network-check.yml)), both `push` and `pull_request` runs completed successfully on `ubuntu-latest` using Terraform `1.9.8`:
+In GitHub Actions, the shared [`terraform-ci.yml`](../../.github/workflows/terraform-ci.yml) workflow validates this lab on `ubuntu-latest` with Terraform `1.9.8` (the minimum supported version) and runs a Checkov security scan. CI uses `-backend=false` to perform static syntax and schema validation without cloud credentials.
 
-```powershell
-terraform fmt -check -recursive
-terraform init -backend=false -lockfile=readonly
-terraform validate
-```
+## Security Scan and Accepted Risks
 
-CI uses `-backend=false` to perform static syntax and schema validation without requiring cloud credentials.
+Checkov findings for this lab are recorded as accepted risks with inline `#checkov:skip` comments in [`main.tf`](main.tf):
+
+| Check | Decision |
+| --- | --- |
+| `CKV_GCP_26` — VPC Flow Logs | Deferred to the planned monitoring lab to avoid log ingestion costs. |
+| `CKV_GCP_74` — Private Google Access | No workloads run in the São Paulo subnet yet; enable it when a workload needs Google APIs. |
+| `CKV2_GCP_18` — Network firewall | Firewall rules are owned by each workload lab (Lab 02 defines its IAP allow/deny rules). |
 
 ## Prerequisites
 
-- Terraform `1.9.8` or compatible `1.x` release (CI uses `1.9.8`).
+- Terraform `>= 1.9.8, < 2.0.0` (CI uses `1.9.8`).
 - A Google Cloud project with billing and the Compute Engine API enabled.
 - Access to the remote state bucket (`roles/storage.objectAdmin` on the bucket) and permissions to manage VPC networks when running `plan` or `apply` against the live backend.
 - Google Cloud CLI (`gcloud`) for local Application Default Credentials authentication.
 
-The Google provider constraint is `~> 7.0`, with version `7.46.2` pinned in `.terraform.lock.hcl`.
+Versions are declared in [`versions.tf`](versions.tf): Google provider pinned to `7.46.2`, matching `.terraform.lock.hcl`. Inputs are validated (`project_id` format and `subnet_cidr` as a valid IPv4 CIDR range).
 
 ## Validate Without Cloud Credentials
 
@@ -74,7 +76,7 @@ Run from `projects/01-vpc-network/` in a clean environment or CI runner:
 
 ```powershell
 terraform fmt -check -recursive
-terraform init -backend=false -lockfile=readonly
+terraform init -backend=false -lockfile=readonly -input=false
 terraform validate
 ```
 
@@ -98,7 +100,7 @@ Because [Lab 02](../02-secure-compute-engine/README.md) depends on `portfolio-vp
 
 ## Progress Checklist
 
-- [x] Terraform configuration imported and documented (`main.tf`, `variables.tf`, `outputs.tf`, `backend.tf`)
+- [x] Terraform configuration imported and documented (`versions.tf`, `main.tf`, `variables.tf`, `outputs.tf`, `backend.tf`)
 - [x] Local formatting (`terraform fmt -check`) and `terraform validate` passed
 - [x] GitHub Actions CI validation (`push` and `pull_request`) passed
 - [x] Cloud deployment in São Paulo (`portfolio-vpc` and `portfolio-subnet`, `10.10.0.0/24`) verified via `gcloud compute` and `terraform plan` (`No changes`)

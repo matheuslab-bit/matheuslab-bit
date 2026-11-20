@@ -1,11 +1,14 @@
-﻿# Terraform
+﻿# Terraform working files and state (state can contain sensitive data)
 .terraform/
 *.tfstate
 *.tfstate.*
+*.tfplan
+*.plan
+crash*.log
+
+# Variable files with real values (commit only *.tfvars.example)
 *.tfvars
 *.tfvars.json
-*.tfplan
-crash.log
 
 # Terraform override files
 override.tf
@@ -13,14 +16,28 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Credentials and private keys
+# Credentials, keys and secrets
 *.pem
 *.key
-service-account*.json
+application_default_credentials.json
 credentials*.json
+*-credentials.json
+service-account*.json
+*-service-account.json
 *-key.json
 secrets*.json
+*-secrets.json
+.env
+.env.*
 
-# Operating system
+# Logs, local backups and tooling
+*.log
+*.bak
+.venv/
+.checkov/
+
+# Editors and operating system
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db

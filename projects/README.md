@@ -30,7 +30,8 @@ Planned work is intentionally excluded from the completed-labs table.
 ## Project quality checklist
 
 - [x] Keep source code in version control and document the architecture.
-- [x] Use Terraform validation and automated checks where applicable.
+- [x] Use Terraform validation and automated checks where applicable ([`terraform-ci.yml`](../.github/workflows/terraform-ci.yml)).
+- [x] Scan Terraform with Checkov and document every accepted risk inline.
 - [x] Manage downstream lab states remotely in a versioned, locked GCS bucket.
 - [x] Record security trade-offs and cost considerations.
 - [ ] Publish a tested cloud application with reproducible instructions.

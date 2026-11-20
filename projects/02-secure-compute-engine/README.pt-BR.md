@@ -55,6 +55,16 @@ Uma VPC no Google Cloud é um recurso global: adicionar uma sub-rede em Iowa (`u
 - **Entrada vs. saída de rede:** o IAP fornece entrada administrativa para SSH, não saída geral para a internet. Atualizações de pacotes Debian e downloads externos exigem um caminho de saída projetado e aprovado separadamente.
 - **Não pronta para produção:** a família de imagens `debian-12` pode resolver para versões mais recentes em planos futuros. Sem uma estratégia aprovada de atualização de pacotes, saída de rede e monitoramento, esta VM não deve ser apresentada como pronta para produção.
 
+## Scan de Segurança e Riscos Aceitos
+
+O workflow compartilhado [`terraform-ci.yml`](../../.github/workflows/terraform-ci.yml) executa o Checkov neste laboratório: **22 verificações são aprovadas** (sem IP público, sem conta de serviço padrão, OS Login, chaves SSH do projeto bloqueadas, porta serial desativada, Shielded VM, sem entrada SSH/RDP irrestrita, entre outras). Os demais achados são riscos aceitos, documentados com `#checkov:skip` no próprio [`main.tf`](main.tf):
+
+| Verificação | Decisão |
+| --- | --- |
+| `CKV_GCP_26` — VPC Flow Logs | Adiado para o laboratório de monitoramento planejado, evitando custos de ingestão de logs. |
+| `CKV_GCP_74` — Private Google Access | Desativado intencionalmente; a VM não possui caminho de saída aprovado neste laboratório. |
+| `CKV_GCP_38` — Criptografia de disco com chaves do cliente | O disco de boot usa criptografia gerenciada pelo Google; chaves gerenciadas pelo cliente estão planejadas para um futuro laboratório de Cloud KMS. |
+
 ## Pré-requisitos e Permissões
 
 O projeto Google Cloud de destino requer faturamento ativo, disponibilidade de `e2-micro` e disco padrão em `us-central1`, a rede `portfolio-vpc` existente, o bucket de estado remoto do Lab 03 e as APIs Compute Engine, IAM, IAP e OS Login habilitadas.

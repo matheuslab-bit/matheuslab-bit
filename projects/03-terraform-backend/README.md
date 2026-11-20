@@ -39,7 +39,7 @@ A foundational question in Infrastructure as Code is: *who stores the state of t
 ## How the GCS Backend Works
 
 ### State Locking
-When a lab uses `backend "gcs"`, Terraform automatically acquires a distributed lock before any operation that writes state (`plan`, `apply`, `destroy`, `import`). It does this by creating a temporary `.tflock` object next to `default.tfstate` using GCS object generation preconditions. If a second run starts concurrently, Terraform aborts immediately rather than corrupting the state.
+When a lab uses `backend "gcs"`, Terraform automatically acquires a distributed lock before any operation that can read or modify state (`plan`, `apply`, `destroy`, `import`), even though `plan` itself does not write state. It does this by creating a temporary `.tflock` object next to `default.tfstate` using GCS object generation preconditions. If a second run starts concurrently, Terraform aborts immediately rather than corrupting the state.
 
 ### Object Versioning, 90-Day Lifecycle Policy, and 7-Day Soft Delete
 - **Object Versioning (`versioning.enabled = true`):** every `terraform apply` writes a new live object generation (`default.tfstate`). The previous state is not overwritten in place; instead, GCS marks it as a **noncurrent (`ARCHIVED`)** version with a unique generation number.
@@ -60,6 +60,13 @@ When a lab uses `backend "gcs"`, Terraform automatically acquires a distributed 
 - **`deletion_policy = "PREVENT"`:** enforces provider-level deletion protection in Google provider `7.46.2`, blocking bucket deletion requests even during destroy operations.
 - **`lifecycle.prevent_destroy = true`:** causes Terraform's core engine to reject any execution plan that attempts to destroy the state bucket. **Important boundary:** `prevent_destroy`, `deletion_policy = "PREVENT"`, and `force_destroy = false` guard against accidental destruction triggered through Terraform; they do **not** replace state backups (note that local backups stored outside the repository on the same disk do not protect against physical drive failure) and do **not** prevent manual deletion performed outside Terraform (such as via the Google Cloud Console, `gcloud storage rm`, or direct API calls by privileged identities).
 - **No hardcoded identifiers or personal data:** both `project_id` and `bucket_name` are required input variables supplied locally via `terraform.tfvars` (ignored by Git). Use an opaque, non-identifying bucket name (for example, `gcp-portfolio-tfstate-usc1-<random-suffix>`) that does not embed your Google Cloud Project ID or personal information.
+
+### Security Scan and Accepted Risk
+The shared [`terraform-ci.yml`](../../.github/workflows/terraform-ci.yml) workflow runs Checkov on this lab: versioning, uniform bucket-level access, and public access prevention checks pass. One finding is an accepted risk, documented inline with `#checkov:skip` in [`main.tf`](main.tf):
+
+| Check | Decision |
+| --- | --- |
+| `CKV_GCP_62` — Bucket access logging | Usage logs would require a second log bucket; changes to the bucket are already recorded by Cloud Audit Logs (Admin Activity). |
 
 ### Required IAM Permissions
 - **To provision the bucket (Lab 03):** the Terraform identity needs `storage.buckets.create`, `storage.buckets.get`, and `storage.buckets.update` in the target project (for example, `roles/storage.admin` scoped to the project or a custom bootstrap role).
