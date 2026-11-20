@@ -1,0 +1,40 @@
+name: GCS Terraform backend lab validation
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "projects/03-terraform-backend/**"
+      - ".github/workflows/03-terraform-backend-check.yml"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "projects/03-terraform-backend/**"
+      - ".github/workflows/03-terraform-backend-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Format and validate GCS backend lab
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/03-terraform-backend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7.0.1
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4.0.1
+        with:
+          terraform_version: "1.9.8"
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+      - name: Initialize providers without a backend
+        run: terraform init -backend=false -lockfile=readonly -input=false
+      - name: Validate configuration
+        run: terraform validate
