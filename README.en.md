@@ -4,7 +4,7 @@ Infrastructure analyst based in Campinas, Brazil.
 
 [Português](README.md) | [English](README.en.md)
 
-I have worked in IT since 2014. Today I am a Tier 2 analyst for telecom and VoIP environments: I handle about 500 tickets a month, dig into the root cause of problems and have been automating my team's repetitive tasks.
+I have worked in IT since 2014. Today I am a Tier 2 analyst for telecom and VoIP environments: I handle about 500 tickets a month, dig into the root cause of problems, follow our services on Grafana dashboards and have been automating my team's repetitive tasks with JavaScript.
 
 Before that, I managed Active Directory for a contact center with about 2,000 agent seats, along with Group Policy, Hyper-V, backups and FortiGate. I also monitored business customers' networks with Zabbix and PRTG.
 
@@ -18,9 +18,9 @@ Before that, I managed Active Directory for a contact center with about 2,000 ag
 
 - Windows Server, Active Directory, Group Policy, DNS, DHCP and Hyper-V
 - Networking: TCP/IP, VLAN, VPN, FortiGate and managed switches
-- Monitoring: Zabbix and PRTG
+- Monitoring: Zabbix, PRTG and Grafana
 - Telecom: SIP and VoIP
-- Automation and cloud: PowerShell, Python, Terraform, Google Cloud and GitHub Actions
+- Automation and cloud: JavaScript, PowerShell, Python, Terraform, Google Cloud and GitHub Actions
 
 ## How I like to work
 
