@@ -1,5 +1,0 @@
-# Copy this file to terraform.tfvars locally and set your real Google Cloud project ID.
-# Never commit terraform.tfvars to version control.
-
-project_id = "your-gcp-project-id"
-zone       = "us-central1-a"
