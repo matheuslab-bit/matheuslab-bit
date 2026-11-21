@@ -1,7 +1,0 @@
-# Copy this file to terraform.tfvars locally and set your real values.
-# Never commit terraform.tfvars to version control.
-
-project_id                        = "your-gcp-project-id"
-bucket_name                       = "your-unique-tfstate-bucket-name"
-region                            = "us-central1"
-noncurrent_version_retention_days = 90
