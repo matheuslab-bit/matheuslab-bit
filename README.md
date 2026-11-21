@@ -1,38 +1,31 @@
 # Matheus Silva
 
-**Analista de Infraestrutura** · Windows Server · Active Directory · Redes · Monitoramento · Google Cloud
+Analista de infraestrutura em Campinas/SP.
 
 [Português](README.md) | [English](README.en.md)
 
-Em TI desde 2014. Hoje atuo como **analista N2 em telecom e VoIP**: atendo cerca de 500 chamados por mês, faço análise de causa raiz e automatizo processos repetitivos da equipe. Antes, administrei o **Active Directory de um contact center com cerca de 2.000 posições de atendimento** (GPO, Hyper-V, backup, FortiGate) e monitorei a rede de clientes corporativos com **Zabbix e PRTG**.
+Trabalho com TI desde 2014. Hoje sou analista N2 em ambientes de telecom e VoIP: atendo cerca de 500 chamados por mês, investigo a causa raiz dos problemas e venho automatizando tarefas repetitivas da equipe.
 
-Aqui no GitHub mantenho dois portfólios práticos, cada um com CI próprio e documentação do que foi planejado, validado e executado.
+Antes, cuidei do Active Directory de um contact center com cerca de 2.000 posições de atendimento, junto com GPO, Hyper-V, rotina de backup e FortiGate. Também trabalhei no monitoramento da rede de clientes corporativos com Zabbix e PRTG.
 
-## Portfólios
+## O que tem aqui
 
-| | Repositório | O que você encontra |
-| --- | --- | --- |
-| 🖥️ | **[Microsoft Infrastructure Labs](https://github.com/matheuslab-bit/microsoft-infra-labs)** | 9 labs on-premises em Hyper-V automatizados com PowerShell: AD DS, GPO, DNS/DHCP, servidor de arquivos AGDLP, backup com **teste automatizado de restauração**, Zabbix, segmentação com FortiGate e automação da operação (relatório de saúde do AD, desligamento padronizado de colaboradores) |
-| ☁️ | **[Google Cloud Portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)** | 3 labs Terraform **implantados** no Google Cloud: VPC personalizada, VM privada com acesso só por IAP e OS Login, e backend de state remoto em GCS endurecido; CI com `terraform validate` e Checkov |
+**[microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs)**: um laboratório no Hyper-V onde monto do zero o ambiente Microsoft de uma empresa, com domínio, GPO, DNS, DHCP, servidor de arquivos, backup com teste de restauração, Zabbix e FortiGate. Tudo automatizado com PowerShell.
 
-## Stack
+**[google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)**: os meus labs de nuvem no Google Cloud com Terraform. Já estão implantados: uma rede VPC, uma VM sem IP público acessada só pelo IAP e um bucket para guardar o state do Terraform.
 
-**Infraestrutura Microsoft:** Windows Server · Active Directory · Group Policy · DNS · DHCP · Hyper-V · Microsoft 365 · Entra ID · PowerShell
+## Com o que trabalho
 
-**Redes e segurança:** TCP/IP · VLAN · VPN · FortiGate · switches gerenciáveis · menor privilégio · segmentação
+- Windows Server, Active Directory, GPO, DNS, DHCP e Hyper-V
+- Redes: TCP/IP, VLAN, VPN, FortiGate e switches gerenciáveis
+- Monitoramento: Zabbix e PRTG
+- Telecom: SIP e VoIP
+- Automação e nuvem: PowerShell, Python, Terraform, Google Cloud e GitHub Actions
 
-**Operação:** Zabbix · PRTG · ITIL · gestão de incidentes · análise de logs e causa raiz · SIP/VoIP
+## Como gosto de trabalhar
 
-**Nuvem e automação:** Google Cloud · Terraform · GitHub Actions · Pester · Python · Git
-
-## Como eu trabalho
-
-- **Tudo como código:** a configuração vive num arquivo versionado, não na memória de quem fez.
-- **Seguro para executar:** scripts idempotentes com `-WhatIf`; nada de senha no código.
-- **Prova, não promessa:** testes automatizados no CI e checklists de validação em cada lab.
-- **Documentação honesta:** separo o que está planejado, validado e implantado.
+Gosto de deixar as coisas documentadas e fáceis de repetir: a configuração fica num arquivo versionado, os scripts podem rodar de novo sem quebrar nada e sempre dá para simular antes de mudar. Nos labs, deixo claro o que já executei e o que ainda está só no código.
 
 ## Contato
 
-- **LinkedIn:** [linkedin.com/in/matheus-s-ti](https://linkedin.com/in/matheus-s-ti)
-- **E-mail:** [matheus.silva.gcp@gmail.com](mailto:matheus.silva.gcp@gmail.com)
+[LinkedIn](https://linkedin.com/in/matheus-s-ti) · [matheus.silva.gcp@gmail.com](mailto:matheus.silva.gcp@gmail.com)
