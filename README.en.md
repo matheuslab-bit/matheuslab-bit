@@ -1,38 +1,31 @@
 # Matheus Silva
 
-**Infrastructure Analyst** · Windows Server · Active Directory · Networking · Monitoring · Google Cloud
+Infrastructure analyst based in Campinas, Brazil.
 
 [Português](README.md) | [English](README.en.md)
 
-Working in IT since 2014. I am currently a **Tier 2 analyst for telecom and VoIP environments**: I handle about 500 tickets a month, run root cause analysis and automate my team's repetitive processes. Before that, I administered the **Active Directory of a contact center with about 2,000 agent seats** (Group Policy, Hyper-V, backup, FortiGate) and monitored business customers' networks with **Zabbix and PRTG**.
+I have worked in IT since 2014. Today I am a Tier 2 analyst for telecom and VoIP environments: I handle about 500 tickets a month, dig into the root cause of problems and have been automating my team's repetitive tasks.
 
-On GitHub I keep two hands-on portfolios, each with its own CI and documentation that separates planned, validated and executed work.
+Before that, I managed Active Directory for a contact center with about 2,000 agent seats, along with Group Policy, Hyper-V, backups and FortiGate. I also monitored business customers' networks with Zabbix and PRTG.
 
-## Portfolios
+## What you will find here
 
-| | Repository | What you will find |
-| --- | --- | --- |
-| 🖥️ | **[Microsoft Infrastructure Labs](https://github.com/matheuslab-bit/microsoft-infra-labs)** | 9 on-premises Hyper-V labs automated with PowerShell: AD DS, Group Policy, DNS/DHCP, AGDLP file server, backups with **automated restore testing**, Zabbix, FortiGate segmentation and operations automation (AD health report, standardized offboarding) |
-| ☁️ | **[Google Cloud Portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)** | 3 Terraform labs **deployed** to Google Cloud: custom VPC, private VM reachable only through IAP and OS Login, hardened GCS remote state backend; CI with `terraform validate` and Checkov |
+**[microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs)**: a Hyper-V lab where I build a company's Microsoft environment from scratch, with domain, Group Policy, DNS, DHCP, file server, backups with restore testing, Zabbix and FortiGate. Everything is automated with PowerShell.
 
-## Stack
+**[google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)**: my Google Cloud labs with Terraform. Already deployed: a VPC network, a VM with no public IP reachable only through IAP, and a bucket that stores the Terraform state.
 
-**Microsoft infrastructure:** Windows Server · Active Directory · Group Policy · DNS · DHCP · Hyper-V · Microsoft 365 · Entra ID · PowerShell
+## What I work with
 
-**Networking and security:** TCP/IP · VLAN · VPN · FortiGate · managed switches · least privilege · segmentation
+- Windows Server, Active Directory, Group Policy, DNS, DHCP and Hyper-V
+- Networking: TCP/IP, VLAN, VPN, FortiGate and managed switches
+- Monitoring: Zabbix and PRTG
+- Telecom: SIP and VoIP
+- Automation and cloud: PowerShell, Python, Terraform, Google Cloud and GitHub Actions
 
-**Operations:** Zabbix · PRTG · ITIL · incident management · log and root cause analysis · SIP/VoIP
+## How I like to work
 
-**Cloud and automation:** Google Cloud · Terraform · GitHub Actions · Pester · Python · Git
-
-## How I work
-
-- **Everything as code:** configuration lives in a versioned file, not in someone's memory.
-- **Safe to run:** idempotent scripts with `-WhatIf`; no passwords in code.
-- **Proof, not promises:** automated tests in CI and a validation checklist in every lab.
-- **Honest documentation:** planned, validated and deployed work are kept separate.
+I like things documented and easy to repeat: configuration lives in a versioned file, scripts can run again without breaking anything, and there is always a way to dry-run before changing. In my labs I make clear what I have actually run and what is still only code.
 
 ## Contact
 
-- **LinkedIn:** [linkedin.com/in/matheus-s-ti](https://linkedin.com/in/matheus-s-ti)
-- **Email:** [matheus.silva.gcp@gmail.com](mailto:matheus.silva.gcp@gmail.com)
+[LinkedIn](https://linkedin.com/in/matheus-s-ti) · [matheus.silva.gcp@gmail.com](mailto:matheus.silva.gcp@gmail.com)
