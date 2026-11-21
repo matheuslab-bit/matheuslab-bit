@@ -4,7 +4,7 @@ Analista de infraestrutura em Campinas/SP.
 
 [Português](README.md) | [English](README.en.md)
 
-Trabalho com TI desde 2014. Hoje sou analista N2 em ambientes de telecom e VoIP: atendo cerca de 500 chamados por mês, investigo a causa raiz dos problemas e venho automatizando tarefas repetitivas da equipe.
+Trabalho com TI desde 2014. Hoje sou analista N2 em ambientes de telecom e VoIP: atendo cerca de 500 chamados por mês, investigo a causa raiz dos problemas, acompanho os serviços em dashboards no Grafana e venho automatizando tarefas repetitivas da equipe com JavaScript.
 
 Antes, cuidei do Active Directory de um contact center com cerca de 2.000 posições de atendimento, junto com GPO, Hyper-V, rotina de backup e FortiGate. Também trabalhei no monitoramento da rede de clientes corporativos com Zabbix e PRTG.
 
@@ -18,9 +18,9 @@ Antes, cuidei do Active Directory de um contact center com cerca de 2.000 posiç
 
 - Windows Server, Active Directory, GPO, DNS, DHCP e Hyper-V
 - Redes: TCP/IP, VLAN, VPN, FortiGate e switches gerenciáveis
-- Monitoramento: Zabbix e PRTG
+- Monitoramento: Zabbix, PRTG e Grafana
 - Telecom: SIP e VoIP
-- Automação e nuvem: PowerShell, Python, Terraform, Google Cloud e GitHub Actions
+- Automação e nuvem: JavaScript, PowerShell, Python, Terraform, Google Cloud e GitHub Actions
 
 ## Como gosto de trabalhar
 
