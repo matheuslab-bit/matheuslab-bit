@@ -1,30 +1,37 @@
 # Matheus Silva
 
-SIP Analyst.
+**Infrastructure and Telecom** · Windows Server and Active Directory · Networking and FortiGate · Zabbix and Grafana · VoIP/SIP · Terraform and Google Cloud
 
 [Português](README.md) | [English](README.en.md)
 
-I have worked in IT since 2014. Today I am a Tier 2 analyst for telecom and VoIP environments: I handle about 500 tickets a month, dig into the root cause of problems, follow our services on Grafana dashboards and have been automating my team's repetitive tasks with JavaScript.
+I have worked in IT since 2014. I look after servers, networks and phone systems so people never have to think about them. When something breaks, I dig down to the root cause and document it so it does not happen again.
 
-Before that, I managed Active Directory for a contact center with about 2,000 agent seats, along with Group Policy, Hyper-V, backups and FortiGate. I also monitored business customers' networks with Zabbix and PRTG.
+## Projects
 
-## What you will find here
+| Repository | What it is | Highlights |
+| --- | --- | --- |
+| [microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs) | A company's Microsoft environment, built from scratch on Hyper-V and automated with PowerShell | AD, Group Policy, backups with restore testing, Zabbix, FortiGate and runbooks |
+| [google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio) | 7 Terraform labs deployed and tested on my own Google Cloud project | VM with no public IP, keyless CI, alerts and budget |
 
-**[microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs)**: a Hyper-V lab where I build a company's Microsoft environment from scratch, with domain, Group Policy, DNS, DHCP, file server, backups with restore testing, Zabbix and FortiGate. Everything is automated with PowerShell.
+## Experience
 
-**[google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)**: my Google Cloud labs with Terraform. Already deployed: a VPC network, a VM with no public IP reachable only through IAP, and a bucket that stores the Terraform state.
+- **Today:** Tier 2 telecom and VoIP analyst. About 500 tickets a month, root cause analysis, services tracked on Grafana and team tasks automated with JavaScript.
+- **Contact center with about 2,000 agent seats:** Active Directory, Group Policy, Hyper-V, backups and FortiGate.
+- **Business customer monitoring:** networks tracked with Zabbix and PRTG.
 
-## What I work with
+## Tools
 
-- Windows Server, Active Directory, Group Policy, DNS, DHCP and Hyper-V
-- Networking: TCP/IP, VLAN, VPN, FortiGate and managed switches
-- Monitoring: Zabbix, PRTG and Grafana
-- Telecom: SIP and VoIP
-- Automation and cloud: JavaScript, PowerShell, Python, Terraform, Google Cloud and GitHub Actions
+| Area | Tools |
+| --- | --- |
+| Servers | Windows Server, Active Directory, Group Policy, DNS, DHCP, Hyper-V and Linux |
+| Networking | TCP/IP, VLAN, VPN, FortiGate and managed switches |
+| Monitoring | Zabbix, PRTG and Grafana |
+| Telecom | SIP and VoIP |
+| Automation and cloud | PowerShell, JavaScript, Python, Terraform, Google Cloud and GitHub Actions |
 
-## How I like to work
+## How I work
 
-I like things documented and easy to repeat: configuration lives in a versioned file, scripts can run again without breaking anything, and there is always a way to dry-run before changing. In my labs I make clear what I have actually run and what is still only code.
+Configuration in a versioned file, scripts that can run again without breaking anything, a dry run before any change, and everything documented. In my labs I keep what I have actually run separate from what is still only code.
 
 ## Contact
 
