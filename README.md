@@ -1,30 +1,37 @@
 # Matheus Silva
 
-Analista SIP.
+**Infraestrutura e Telecom** · Windows Server e Active Directory · Redes e FortiGate · Zabbix e Grafana · VoIP/SIP · Terraform e Google Cloud
 
 [Português](README.md) | [English](README.en.md)
 
-Trabalho com TI desde 2014. Hoje sou analista N2 em ambientes de telecom e VoIP: atendo cerca de 500 chamados por mês, investigo a causa raiz dos problemas, acompanho os serviços em dashboards no Grafana e venho automatizando tarefas repetitivas da equipe com JavaScript.
+Trabalho com TI desde 2014. Cuido de servidores, rede e telefonia para que as pessoas nem precisem lembrar que eles existem. Quando algo para, investigo até a causa raiz e deixo documentado para não acontecer de novo.
 
-Antes, cuidei do Active Directory de um contact center com cerca de 2.000 posições de atendimento, junto com GPO, Hyper-V, rotina de backup e FortiGate. Também trabalhei no monitoramento da rede de clientes corporativos com Zabbix e PRTG.
+## Projetos
 
-## O que tem aqui
+| Repositório | O que é | Destaques |
+| --- | --- | --- |
+| [microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs) | O ambiente Microsoft de uma empresa, montado do zero no Hyper-V e automatizado com PowerShell | AD, GPO, backup com teste de restauração, Zabbix, FortiGate e runbooks |
+| [google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio) | 7 labs de Terraform implantados e testados no meu projeto do Google Cloud | VM sem IP público, CI sem chave, alertas e orçamento |
 
-**[microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs)**: um laboratório no Hyper-V onde monto do zero o ambiente Microsoft de uma empresa, com domínio, GPO, DNS, DHCP, servidor de arquivos, backup com teste de restauração, Zabbix e FortiGate. Tudo automatizado com PowerShell.
+## Experiência
 
-**[google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)**: os meus labs de nuvem no Google Cloud com Terraform. Já estão implantados: uma rede VPC, uma VM sem IP público acessada só pelo IAP e um bucket para guardar o state do Terraform.
+- **Hoje:** analista N2 de telecom e VoIP. Cerca de 500 chamados por mês, análise de causa raiz, serviços acompanhados no Grafana e tarefas da equipe automatizadas com JavaScript.
+- **Contact center com cerca de 2.000 posições:** Active Directory, GPO, Hyper-V, rotina de backup e FortiGate.
+- **Monitoramento de clientes corporativos:** redes acompanhadas com Zabbix e PRTG.
 
-## Com o que trabalho
+## Ferramentas
 
-- Windows Server, Active Directory, GPO, DNS, DHCP e Hyper-V
-- Redes: TCP/IP, VLAN, VPN, FortiGate e switches gerenciáveis
-- Monitoramento: Zabbix, PRTG e Grafana
-- Telecom: SIP e VoIP
-- Automação e nuvem: JavaScript, PowerShell, Python, Terraform, Google Cloud e GitHub Actions
+| Área | Ferramentas |
+| --- | --- |
+| Servidores | Windows Server, Active Directory, GPO, DNS, DHCP, Hyper-V e Linux |
+| Redes | TCP/IP, VLAN, VPN, FortiGate e switches gerenciáveis |
+| Monitoramento | Zabbix, PRTG e Grafana |
+| Telecom | SIP e VoIP |
+| Automação e nuvem | PowerShell, JavaScript, Python, Terraform, Google Cloud e GitHub Actions |
 
-## Como gosto de trabalhar
+## Como trabalho
 
-Gosto de deixar as coisas documentadas e fáceis de repetir: a configuração fica num arquivo versionado, os scripts podem rodar de novo sem quebrar nada e sempre dá para simular antes de mudar. Nos labs, deixo claro o que já executei e o que ainda está só no código.
+Configuração num arquivo versionado, scripts que podem rodar de novo sem quebrar nada, simulação antes de qualquer mudança e tudo documentado. Nos labs, deixo separado o que já executei do que ainda é só código.
 
 ## Contato
 
