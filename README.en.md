@@ -1,26 +1,48 @@
-# Infrastructure and Telecom | Windows Server, Networking and VoIP | Google Cloud
+# Matheus Silva
 
-**Matheus Silva · 12 years in IT · Open to new opportunities**
+**Infrastructure and Telecom** · Windows Server, Networking and VoIP · Google Cloud
 
-I keep servers, networks and phone systems running with a focus on uptime, security, automation and documentation. I come from production environments with thousands of users: I managed Active Directory for a contact center with about 2,000 agent seats, and today I handle about 500 tickets a month as a Tier 2 telecom and VoIP analyst, always digging down to the root cause.
+For 12 years I have kept servers, networks and phone systems running in production. I managed Active Directory for a contact center with about 2,000 agent seats, and today, as a Tier 2 telecom and VoIP analyst, I resolve about 500 tickets a month, always digging down to the root cause.
 
-[🔗 LinkedIn](https://linkedin.com/in/matheus-s-ti) · [📫 Email](mailto:matheus.silva.gcp@gmail.com) · [🇧🇷 Português](README.md)
+This is where my labs live: environments built from scratch, automated, versioned in Git and tested. What has already been run is kept separate from what is still only code.
 
----
-
-## Highlights
-
-- **12 years in IT** (since 2014), from support to server and network administration
-- **Active Directory at scale:** about 2,000 agent seats, with Group Policy, Hyper-V, backups and FortiGate
-- **Tier 2 telecom and VoIP:** about 500 tickets a month, root cause analysis and services tracked on Grafana
-- **Microsoft lab:** [10 labs](https://github.com/matheuslab-bit/microsoft-infra-labs) that build a company from scratch, automated with PowerShell and tested on every change
-- **Hands-on Google Cloud:** [7 Terraform labs](https://github.com/matheuslab-bit/google-cloud-portfolio) deployed and tested, with a VM with no public IP, keyless CI, alerts and a budget
-- **Automation mindset:** if a task repeats, it becomes a script; if it changes the environment, it lives in Git
-- **Preparing for:** Google Cloud Associate Cloud Engineer (ACE) and ITIL 4 Foundation
+[LinkedIn](https://linkedin.com/in/matheus-s-ti) · [Email](mailto:matheus.silva.gcp@gmail.com) · [Português](README.md)
 
 ---
 
-## Systems and infrastructure
+| 12 years | ~2,000 | ~500 / month | 17 labs |
+| :---: | :---: | :---: | :---: |
+| in IT, since 2014 | AD seats I managed | Tier 2 telecom and VoIP tickets | Microsoft and Google Cloud |
+
+---
+
+## Projects
+
+### 🏢 [microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs)
+
+A company's Microsoft environment, built from scratch on Hyper-V across 10 labs and automated with PowerShell. It also includes the scripts and runbooks I use day to day.
+
+`Active Directory` `Group Policy` `DNS` `DHCP` `File server` `Backups with tested restores` `Zabbix` `Grafana` `FortiGate`
+
+### ☁️ [google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)
+
+7 Google Cloud labs with Terraform, deployed on my own project, with the test for each one recorded.
+
+`VPC` `Private VM via IAP` `Remote state` `Alerts and budget` `Cloud Run` `Keyless CI` `Cloud NAT`
+
+---
+
+## How I work
+
+- **If a task repeats, it becomes a script.** If it changes the environment, it lives in Git.
+- **A backup only counts once it has been restored.**
+- **Every change has a rollback plan** and a runbook for whoever comes next.
+- **A ticket ends at the root cause,** not at the symptom.
+- **"Done" means "with proof":** in my labs, anything marked as run has evidence.
+
+---
+
+## Tech stack
 
 | Area | What I use |
 | --- | --- |
@@ -32,30 +54,15 @@ I keep servers, networks and phone systems running with a focus on uptime, secur
 | **Telecom** | SIP and VoIP, voice quality troubleshooting |
 | **Cloud** | Google Cloud: VPC, Compute Engine, Cloud Storage, Cloud Run, IAM, Monitoring |
 | **Automation** | PowerShell, Terraform, JavaScript (Node.js), Bash, Python, Docker and GitHub Actions |
-| **Practices** | Backups with restore testing, changes with a rollback plan, runbooks and versioned configuration |
 
 ---
 
-## Featured repositories
+## Currently learning
 
-- **🏢 [microsoft-infra-labs](https://github.com/matheuslab-bit/microsoft-infra-labs)**: a company's Microsoft environment, built from scratch  
-  _Hyper-V, AD, Group Policy, DNS and DHCP, file server, backups with restore testing, Zabbix, Grafana and FortiGate, plus the scripts and runbooks I use day to day._
-
-- **☁️ [google-cloud-portfolio](https://github.com/matheuslab-bit/google-cloud-portfolio)**: 7 Google Cloud labs with Terraform  
-  _VPC network, private VM reached through IAP, remote state, alerts and budget, Cloud Run, keyless CI and Cloud NAT. All deployed on my own project, with the test recorded._
-
----
-
-## Current focus
-
-- Running the Microsoft labs on Hyper-V and recording the evidence for each one
+- Google Cloud **Associate Cloud Engineer (ACE)** and **ITIL 4 Foundation**
 - Traceability and auditing: time sync, audit policy and access reviews
-- Studying for the Google Cloud Associate Cloud Engineer exam
+- Running the Microsoft labs on Hyper-V and recording the evidence for each one
 
 ---
 
-## Notes for recruiters
-
-- Interested in **Infrastructure, Systems, Networking or Telecom** roles
-- Experience operating production environments and handling Tier 2 tickets from report to root cause
-- My labs keep what has been run separate from what is still only code: anything marked done has proof
+Happy to talk infrastructure, telecom and automation. Find me on [LinkedIn](https://linkedin.com/in/matheus-s-ti) or by [email](mailto:matheus.silva.gcp@gmail.com).
